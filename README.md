@@ -1,6 +1,6 @@
 # bread-mechanical
 
-3D-printed and mechanical parts for the BREAD ecosystem — slice cases, loaf backplane mounts, and related hardware.
+3D-printed and mechanical parts for BREADS-compatible hardware: Slice cases, Loaf backplane mounts, and related hardware.
 
 ## Contents
 

@@ -4,7 +4,7 @@
 
 # bread-mechanical
 
-3D-printed and mechanical parts for the BREAD ecosystem — Slice enclosures,
+3D-printed and mechanical parts for BREADS-compatible hardware: Slice enclosures,
 Loaf backplane mounts, and related hardware.
 
 > **Work in progress.** This repository is early-stage. The designs here are
@@ -14,7 +14,7 @@ Loaf backplane mounts, and related hardware.
 
 | File | Description |
 |---|---|
-| `slice_case.scad` | Parametric enclosure for BREAD Slice modules |
+| `slice_case.scad` | Parametric enclosure for BREADS-compatible Slice modules |
 | `nano.scad` | Arduino Nano mechanical reference model |
 
 ## Usage
