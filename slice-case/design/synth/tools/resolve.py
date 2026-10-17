@@ -41,7 +41,7 @@ def choose_format(name, slice_yaml):
 #   031-5431-1010 (Amphenol BNC jack, Slice_AQ*): a mated BNC plug, coupling sleeve ~d15 (estimate) on the
 #   jack axis 7.35 above the board (0.58 in square body, KiCad STEP bounds) + 0.5 = 15.35.
 HEIGHTS = {'03154311010': 15.35}
-LABEL_MAX = 3          # characters per pin label: what fits vertically at 5.08 pitch (CRITIQUE.md, shared)
+LABEL_MAX = 3          # characters per pin label: what fits vertically at 5.08 pitch
 RULE_PAD = 2.0         # the rule runs this far past the outermost pad centre of its group
 
 
@@ -196,7 +196,9 @@ def resolve(name):
     out = {'slice': name, 'params': params, 'probe': probe, 'panel': panel, 'report': report, 'board_file': os.path.relpath(pcb, REPOS),
            'mcu_usb': usb}
     os.makedirs(os.path.join(HERE, 'resolved'), exist_ok=True)
-    json.dump(out, open(os.path.join(HERE, 'resolved', name + '.json'), 'w'), indent=1)
+    # one line per section; the report is printed, not stored
+    with open(os.path.join(HERE, 'resolved', name + '.json'), 'w') as f:
+        f.write('{\n' + ',\n'.join(f' {json.dumps(k)}: {json.dumps(v)}' for k, v in out.items() if k != 'report') + '\n}\n')
     return out
 
 

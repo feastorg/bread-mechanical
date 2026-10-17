@@ -18,7 +18,7 @@ panel is `panel.scad`, included by it), with parameters from
 `python3 -I groups.py` lists which slices each tray and the lid serve; a tray
 group is the set of slices that resolve to identical tray parameters.
 
-## What changed from `s_tray` / `s_lid`
+## Design
 
 - Front: the roof is open over the terminals (E 68.0 to the far end, A ±40.2)
   between two corner towers. The panel's roof strip slides into a V groove in
@@ -36,8 +36,7 @@ group is the set of slices that resolve to identical tray parameters.
   bosses tied to their wall corners.
 - USB: a 13.35 x 18.4 port (R1.5 corners) centred on the board's own Nano
   USB, in place of the 26.4 x 21.8 window. Its height covers a soldered and a
-  socketed Nano; narrow it once RLHT's mount is measured (`formats.yaml`
-  `mcu_access.nano`).
+  socketed Nano (`formats.yaml` `mcu_access.nano`).
 
 ## Print notes
 

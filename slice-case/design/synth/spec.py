@@ -330,8 +330,3 @@ def nano_exploded(): return _r('nano', 'exploded')
 def nucl_board(): return _r('nucl', 'assembly_board')
 def dcmt_board(): return _r('dcmt', 'assembly_board')
 
-
-def nano_viz():
-    r = _resolved(SLICES['nano'])
-    params = dict(r['params'], part='none', board_t=1.6)
-    return Part('nano-on-mock', openscad(os.path.join(HERE, 'viz', 'with_mock.scad'), backend=BACKEND, **params))

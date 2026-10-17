@@ -68,7 +68,7 @@ win_clear = 0.1;
 bed_chamfer = 0.4;             // elephant's foot relief on bed faces (socket tongue, coupons)
 eps = 0.01;
 facets = 48;
-// form (concepts/form-options option C + option A's roof chamfer)
+// form: full-height end flanges, roof perimeter chamfer
 r_far = 5.3;                   // far plan corners: board R5 + board_clear, on the outline that includes the fascia
 r_bus = 1.0;                   // bus-end plan corners (behind the flanges)
 c_roof = 1.0;                  // 45 deg roof perimeter chamfer (a bed edge: chamfer, not a fillet)
@@ -77,7 +77,7 @@ c_lid = 0.8;                   // lid outer (bed) edge chamfer
 tie_gap = 0.2;                 // boss ties stop this far above the board top: only the boss face clamps
 r_ear = 1.5;                   // flange plan rounds on the outer vertical edges
 r_flange = 3.0;                // flange corners at the lid end
-// front (concepts/sliding-panel + CRITIQUE.md section 2 grafts)
+// front: sliding panel in V-grooved corner towers; fascia to the lid face, R5.3 corners
 front_inset = 11.1;            // roof opening and towers start this far in from the board's far edge: S E 68.0 clears
                                // every S courtyard that reaches |A| > 40.2 (sliding-panel data/corner_survey.txt)
 open_clear = 0.3;              // opening edge = far boss face (boss_d / 2) + 0.3: A +-40.2 on S

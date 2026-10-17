@@ -1,15 +1,4 @@
-> The STLs build into `../1-coupons/` (`../build.sh`). Run the regenerate commands below from `print/src/`. The `work/` and `renders/` outputs named below are not tracked.
-
-# Slice case: calibration coupons v2
-
-> 2026-10-11 (evening): four coupons added for the sliding front panel (then
-> fixed: smooth detent bump, round slot ends, legend engraved), in
-> "Front panel coupons" below. The first six are unchanged and were not
-> re-exported: a rebuild of `insert_ladder`, `spigot_ladder`, `hole_plate` and
-> `ear_ladder` from today's source is byte-identical to the STLs here.
-> `stack_tray` / `stack_lid` rebuild differently, because their corner is now a
-> tower (tray) and the lid has a 0.8 edge chamfer; the boss, pocket, spigot and
-> counterbore they test are unchanged, so the existing pair stays.
+# Slice case: calibration coupons
 
 These coupons set the four numbers the first test print left open: the
 heat-set insert pocket, the lid spigot, the ear hole, and the full stack. Each
@@ -142,64 +131,6 @@ and nozzle comes from rung a, not from the datasheet.
   - `ear_ladder`: 1.4 mm² slices on the 0.3 proud seat-disc lower edges, plus
     0.1 mm² at each teardrop tip (the 0.02 flat).
   - `insert_ladder`, `hole_plate` and `stack_tray`: none.
-- Sliced and checked: see Slicing results.
-
-## Slicing results
-
-PrusaSlicer 2.9.6 (flatpak, CLI), bundled PrusaResearch presets:
-
-- 0.4: `Original Prusa MK4S 0.4 nozzle`, `0.20mm STRUCTURAL @MK4S 0.4`,
-  `Prusament PETG @MK4S`.
-- 0.6: `Original Prusa MK4S 0.6 nozzle`, `0.32mm STRUCTURAL @MK4S 0.6` with
-  `--layer-height 0.3`, `Prusament PETG @MK4S 0.6`. There is no bundled
-  0.30 mm MK4S 0.6 print preset.
-- Overrides on both: `--fill-density 100% --fill-pattern rectilinear
-  --no-support-material --no-binary-gcode`. The MK4S presets default to
-  binary gcode. The default infill pattern refuses 100 %.
-
-Perimeter generator: Arachne, 2 perimeters. Extrusion width: 0.45 at 0.4, 0.68
-at 0.6. First layer: 0.2 at both. The gcode is in `work/gcode/`, and the
-command is in `tools/slice.sh`.
-
-| Coupon | 0.4 / 0.20: time, PETG | 0.6 / 0.30: time, PETG |
-|---|---|---|
-| `insert_ladder` | 29m 29s, 6.49 g | 14m 7s, 6.45 g |
-| `spigot_ladder` | 19m 43s, 4.45 g | 10m 52s, 4.55 g |
-| `hole_plate` | 9m 16s, 2.62 g | 5m 58s, 2.79 g |
-| `ear_ladder` | 18m 36s, 5.04 g | 12m 39s, 5.13 g |
-| `stack_tray` | 18m 10s, 3.15 g | 14m 2s, 3.10 g |
-| `stack_lid` | 4m 24s, 0.73 g | 2m 25s, 0.75 g |
-| All six | 1h 39m 38s, 22.48 g | 1h 0m 3s, 22.77 g |
-
-Times are the gcode's `estimated printing time (normal mode)`. Weights are
-`filament used [g]`.
-
-**How the thin features were checked.** `tools/gcheck.py` reads each gcode,
-including the G2/G3 arcs that the presets' `arc_fitting = emit_center`
-emits. It places the STL frame on the bed by matching bounding-box centres,
-then, in every layer of each feature's z range, collects the extrusion
-segments whose midpoints fall inside the feature's region. For each layer it
-reports the paths by `;TYPE` and the extrusion width, recovered from E per
-mm with PrusaSlicer's flow model. The output is
-`work/gcode/thin-features.txt`, and the regions are in `tools/specs.py`.
-
-| Feature | 0.4 / 0.20 | 0.6 / 0.30 |
-|---|---|---|
-| Spigot wall, 3.2 bores (0.70-0.85), all ladder rungs and `stack_lid` | 2 loops per layer, 0.36-0.45 wide, all 10 layers | 1 loop per layer, 0.68-0.87 wide, all 7 layers |
-| Spigot wall, old 4.7/3.4 (0.65) | 1 loop, 0.64-0.66 wide | 1 loop, 0.63-0.67 wide |
-| Insert boss walls (2.35-2.6), all rungs and `stack_tray` | 3-4 perimeter paths per layer plus solid infill, every layer | 3-4 perimeter paths per layer (0.57-0.87 wide), every layer |
-| Teardrop tips (ear ladder) | The hole centreline stays open to z 13.0 / 13.2 / 13.2 / 13.4 for Ø3.4 / 3.6 / 3.8 / 4.0. The tips are 12.80 / 12.95 / 13.09 / 13.23, and the round tops would close at 12.10-12.40 | Open to 13.1 / 13.1 / 13.4 / 13.4 |
-| Engraved labels (all) | Letter-outline perimeters in every groove layer (z 1.2, 1.4, 1.6) | Letter-outline perimeters in both groove layers (z 1.4, 1.7). Layer 1.1 is solid under the groove, as designed |
-| Hole-plate holes | 1-2 perimeters per layer | 1 perimeter per layer from z 0.5. On the first layer the hole sits inside the 0.4 chamfer and was not separately checked |
-
-No feature is dropped at either nozzle, so no parameter changes are needed for
-0.6. In every rung the spigot is one full-width 0.6 loop, so the 0.75 wall
-prints solid but is still one line thick. That is the limit of a Ø5.0 board
-hole, as covered in the spigot decision.
-
-PrusaSlicer printed one warning, for `hole_plate` at 0.6: "Detected missing
-Voronoi vertex, input polygons will be rotated back and forth". That is an
-Arachne retry; the slice completed and its holes and labels check as above.
 
 ## How to read each coupon and what it sets
 
@@ -271,7 +202,7 @@ detent.** Slide the panel coupon into the tray coupon from the far end.
 3.0, grown 0.2, so no stroke is under 0.8 (`spec.py` `probe_legend_thin`),
 engraved 0.6. Read it at arm's length in room light, at each nozzle.
 
-**g) `tilt_jig` answers CRITIQUE.md §0: can a packed slice be re-terminated in
+**g) `tilt_jig` answers: can a packed slice be re-terminated in
 place?** Take the panel off a Slice_RLHT case, set the jig on the roof with its
 plate edge flush with the far face, and try each MKDS screw with a 3 mm flat
 blade passing under the plate edge (about 36° from the screw axis). Record
@@ -314,29 +245,3 @@ Targets: `insert_ladder`, `spigot_ladder`, `hole_plate`, `ear_ladder`,
 one solid, and has nothing below z = 0. The section planes used were yz:0
 (insert), yz:13 (spigot), yz:9 (ear, through the pad) and yz:74.1 (stack). The
 labels need the DejaVu Sans Bold font on the machine that runs OpenSCAD.
-
-## Running the slicer
-
-`tools/slice.sh` runs the PrusaSlicer flatpak (`flatpak run`; set
-`FLATPAK_RUN` to use a wrapper instead).
-
-The bundled MK4S presets resolve only when the printer model is installed in
-the slicer's datadir. If it is not, `--printer-profile` falls back silently to
-another printer: one trial produced gcode for `Creality CR-10 SMART` with
-`E3D PC-ABS`.
-
-`tools/slice.sh` therefore passes `--datadir "$PRUSA_DATADIR"`: a directory
-holding a copy of the bundled `vendor/PrusaResearch.ini` (plus `.idx` and the
-`PrusaResearch/` folder). Run it as
-`PRUSA_DATADIR=<dir> tools/slice.sh <stl-dir> <out-dir> <name>...`.
-The datadir also holds a two-line `PrusaSlicer.ini`:
-
-```
-[vendor:PrusaResearch]
-model:MK4S = 0.4;0.6
-```
-
-Every gcode here was checked for `printer_settings_id`,
-`filament_settings_id` and `print_settings_id`. Pipe the slicer's output (as
-`| cat > log`): with stdout redirected straight to a file, the run is cut off
-mid-slice with exit 0 and no gcode.
