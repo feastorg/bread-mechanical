@@ -1,0 +1,76 @@
+# Stand-in for the bread-infra slice format table.
+# Board frame, the frame a board designer reads in KiCad with the bus edge on the left:
+#   x = mm from the bus edge (toward the far edge), y = mm from the bottom edge (toward pin 1),
+#   z = mm above the top copper face (negative = under the board).
+# Nothing here is in slot coordinates; tools/resolve.py maps x/y to E/A with the interface's
+# bus_edge_E and the row's bus position, so moving an interface datum cannot leave this stale.
+formats:
+  S:
+    pattern: slice-S-v0            # proposed slice.yaml hardware.mounting.pattern value
+    board: [70.0, 100.0]           # x, y
+    corner_r: 5.0                  # board plan corners (Edge.Cuts arcs: R5.0 on every fleet board, tools/boardgeom.py)
+    bus: {inset: 3.6, y: 50.0}     # pin-row centre: 3.6 from the bus edge, 50.0 from the bottom edge
+    holes: {inset: 5.0, d: 5.0}    # 4 holes, 5 mm in from each corner
+    towers: [T1, T2]               # slot-interface-v1.1 retention.towers ids
+  L:
+    pattern: slice-L-v0
+    board: [100.0, 145.0]
+    corner_r: 5.0
+    bus: {inset: 3.6, y: 50.0}
+    holes: {inset: 5.0, d: 5.0}
+    towers: [T1, T3]
+
+# MCU USB access: one plug-sized port in the wall the board's own MCU USB faces, centred on that USB
+# (tools/resolve.py reads the position from the .kicad_pcb). Keyed by slice.yaml hardware.mcu.form_factor;
+# no key = no port. Replaces the 26.4 x 21.8 worst-case window (2026-10-11).
+#   w, z: plug envelope 12.35 x 8.9 (USB-C overmold width, mini-B shell height; spec.py PLUG_W / PLUG_H)
+#   + 0.5 per side (estimate). z = above the top copper, covering both plug centres: 6.1 with the Nano
+#   soldered, 14.6 in 8.5 female headers (spec.py PLUG_Z). Both stay: a Nano may be soldered or socketed
+#   (RLHT's is socketed, bench 2026-10-17), and the same tray serves either.
+#   e_round: the port centre is rounded to this step so boards whose USB differs by less (36.708 / 36.73)
+#   resolve to one tray; spec.py checks the plug at the board's unrounded position.
+mcu_access:
+  nano: {w: 13.35, z: [1.15, 19.55], r: 1.5, e_round: 0.1}
+
+# Format inference while every slice.yaml still says "slice-standard-v0" (stopgap, one place):
+stopgap_dimensions:
+  "70mm x 100mm": S
+  "100mm x 145mm": L
+
+# Named exceptions: the board differs from its format and the case follows the board file for the
+# named item only. Each has a reason and the source fix that would retire it.
+exceptions:
+  Slice_TEMP_NUCL_L4L-r1:
+    holes: from_board
+    reason: two holes up to 0.183 off the 5 mm inset (tools/boardgeom.py); a d4.7 spigot interferes
+    retire_by: move the holes to the 5 mm inset in the board file
+  Slice_AOEM:
+    format: L
+    holes: from_board
+    reason: slice.yaml pcb.dimensions says 70mm x 100mm; the board is 100.116 x 144.894 (L) with the drifted L holes
+    retire_by: set pcb.dimensions (or the pattern) to L in slice.yaml; move the holes to the 5 mm inset
+  Slice_THMX:
+    format: L
+    holes: from_board
+    reason: same board outline and holes as Slice_AOEM; slice.yaml says 70mm x 100mm
+    retire_by: as Slice_AOEM
+  Slice_STPC:
+    case: none
+    reason: L board (100 x 145) declared 70mm x 100mm; bus 0.43 off along A and 0.2 in E, so every hole is 0.46..0.75 off
+    retire_by: a design decision (own format row or redraw); slot-interface-v1 named exception
+  Slice_TEMP_PICO_L4L-r1:
+    case: none
+    reason: bus 0.43 off along A and 0.2 in E; holes 0.46..0.75 off the L pattern
+    retire_by: as Slice_STPC
+  Slice_STEP:
+    case: none
+    reason: bus socket 3.4 mm further inboard (board edge at E 5.7) and no d5.0 holes found
+    retire_by: slot-interface-v1 named exception; redraw or own format row
+  Slice_FPSG:
+    case: none
+    reason: outline 100.13 x 99.95 and holes off pattern
+    retire_by: slot-interface-v1 named exception
+  Slice_IOCT:
+    case: none
+    reason: D1 (DO-41) courtyard in the bus window, 2.56 past the bus edge
+    retire_by: move D1 out of the window (x >= 6.4 from the bus edge)

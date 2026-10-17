@@ -6,6 +6,7 @@
 
 - `nano.scad` — Arduino Nano mechanical model
 - `slice_case.scad` — Slice enclosure design
+- `slice-case/` — Parametric, data-driven Slice case and Loaf_x004 backplane part, with checks and print guide
 
 ## License
 

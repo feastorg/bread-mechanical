@@ -1,0 +1,8 @@
+{
+ "slice": "Slice_TEMP_NUCL_S4L-r1",
+ "params": {"board_E": [9.1, 79.1], "board_A": [-50.0, 50.0], "holes": [[14.1, -45.0], [14.1, 45.0], [74.1, -45.0], [74.1, 45.0]], "ret_A": [-56.4, 56.4], "env_N": [-7.9, 22.1], "seat_E": 6.7, "board_top_N": -1.27, "tongue_A": 12.7, "tongue_E_min": 4.67, "win_A": 15.4, "win_N": [-1.1, 5.92], "win_E_max": 15.5, "ret_N": 11.5, "ear_t": 5.0, "ear_hole_d": 3.8, "socket_A": 12.7, "socket_N": [-1.27, 1.27], "socket_E": [2.67, 11.24], "edge_notches": [], "floor_reliefs": [], "roof_windows": [], "usb_ports": [], "board_r": 5.0},
+ "probe": {"board_t": 1.67, "pb_outline_E": [9.1, 79.1], "pb_outline_A": [-50.02, 49.98], "pb_corner_r": 5.0, "pb_holes": [[14.1, 44.98, 5.0], [74.1, 44.98, 5.0], [14.1, -45.02, 5.0], [74.1, -45.02, 5.0]], "pb_crt_top": [[56.0, 63.2, -48.753, -43.153], [27.254, 46.294, -49.216, 1.574]], "pb_crt_bot": [[13.0, 17.6, -30.87, -28.57], [13.2, 17.3, -34.675, -31.275], [15.35, 19.95, -37.625, -35.325], [18.05, 22.65, -30.825, -28.525], [18.05, 22.65, -27.77, -25.47], [18.07, 22.63, -34.555, -31.395]]},
+ "panel": {"panel_name": "", "panel_headers": [], "panel_labels": [], "panel_notches": [], "source": null},
+ "board_file": "Slice_TEMP_NUCL_S4L-r1/hardware/BREAD_Slice.kicad_pcb",
+ "mcu_usb": []
+}

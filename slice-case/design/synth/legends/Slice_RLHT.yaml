@@ -1,0 +1,28 @@
+# Front-panel legend for Slice_RLHT. MOCK: names copied by hand from the board silkscreen
+# (F.SilkS "RELAY 1" / "RELAY 2" / "THERMOCOUPLES", B.SilkS NC NO IN GND "E STOP" beside J4 / J5).
+# Stand-in for a slice data field that does not exist yet (the legend source is undecided).
+# Names only: tools/resolve.py places each label on its pads' centre from the .kicad_pcb.
+#   groups[].header  text over the group, with a rule across the group's pads
+#   groups[].refs    connectors the rule spans (defaults to the refs its labels name)
+#   labels[]         ref + pad numbers (default: all of the ref's numbered pads) + text, 3 characters or fewer
+# Quote every text: YAML reads a bare NO as false.
+name: RLHT
+groups:
+  - header: TC
+    labels:
+      - {ref: J2, text: "1"}
+      - {ref: J3, text: "2"}
+  - header: RELAY 2
+    labels:
+      - {ref: J5, pads: [1, 2], text: "ES"}
+      - {ref: J5, pads: [3], text: "GND"}
+      - {ref: J5, pads: [4], text: "IN"}
+      - {ref: J5, pads: [5], text: "NO"}
+      - {ref: J5, pads: [6], text: "NC"}
+  - header: RELAY 1
+    labels:
+      - {ref: J4, pads: [1, 2], text: "ES"}
+      - {ref: J4, pads: [3], text: "GND"}
+      - {ref: J4, pads: [4], text: "IN"}
+      - {ref: J4, pads: [5], text: "NO"}
+      - {ref: J4, pads: [6], text: "NC"}

@@ -1,0 +1,6 @@
+# Stand-in for Slice_RLHT slice.yaml (only the enclosure block). Board frame as in Slice_DCMT.yaml.
+# The Nano USB wall notch that lived here is now the S format default (formats.yaml S.mcu_access.nano),
+# so RLHT has no modifiers.
+hardware:
+  enclosure:
+    modifiers: {}
