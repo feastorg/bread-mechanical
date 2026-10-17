@@ -9,3 +9,4 @@ print_part = "none";
 if (print_part == "tray_print") tray_bed() tray();
 if (print_part == "lid_print") lid_bed() lid();
 if (print_part == "panel_print") panel_bed() panel();
+if (print_part == "usb_plug_print") plug_bed() usb_plug(usb_ports[0]);

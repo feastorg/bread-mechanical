@@ -293,6 +293,28 @@ def probe_legend_off_face(name):
     return _probe(name, 'probe_legend_off_face', 'probe-legend-off-face')
 
 
+# ---- USB plug ------------------------------------------------------------------------------------------------
+def probe_plug_tray(name):
+    """The plug seated (0.02 off the outer face) does not enter the tray: arms clear the port, hooks behind the wall."""
+    pr = Part(f'{name}-probe-plug-tray', _src(name, 'probe_plug_tray'))
+    pr.empty()
+    return pr
+
+
+def probe_plug_board(name):
+    """The seated plug clears the board as its file draws it, including the Nano receptacle that sits in the port."""
+    pr = Part(f'{name}-probe-plug-board', _src(name, 'probe_plug_board', probe=True))
+    pr.empty()
+    return pr
+
+
+def probe_plug_pulled(name):
+    """Pulled 0.3 out, both hooks meet the inner wall face more than 0.1 past the port edge: the plug is retained."""
+    pr = Part(f'{name}-probe-plug-pulled', _src(name, 'probe_plug_pulled'))
+    pr.envelope(min=(10.0, 0.05, 5.0), id='both-hooks-catch')
+    return pr
+
+
 SLICES = {'nano': 'Slice_TEMP_NANO_S2L-r2', 'nucl': 'Slice_TEMP_NUCL_L4L-r1', 'dcmt': 'Slice_DCMT', 'rlht': 'Slice_RLHT',
           'aqph': 'Slice_AQPH'}
 CASE_FNS = (tray, lid, assembly, probe_board, probe_board_only, probe_parts, probe_below_seat)
@@ -301,6 +323,9 @@ PANEL_FNS = (panel, panel_swept, probe_panel_closed, probe_panel_lid, probe_pane
 for _k, _n in SLICES.items():
     for _f in CASE_FNS + (PANEL_FNS if _k in ('rlht', 'aqph') else ()):
         globals()[f'{_k}_{_f.__name__}'] = (lambda f=_f, n=_n: f(n))
+for _k in ('nano', 'rlht'):                          # one per USB group: nano-a, nano-b
+    for _f in (probe_plug_tray, probe_plug_board, probe_plug_pulled):
+        globals()[f'{_k}_{_f.__name__}'] = (lambda f=_f, n=SLICES[_k]: f(n))
 
 
 def nano_panel_blank():

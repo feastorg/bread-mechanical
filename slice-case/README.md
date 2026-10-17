@@ -92,7 +92,8 @@ the folder that holds this repository, or in `$BREADS_REPOS`.
   Re-terminating a packed slice may mean pulling it (2 ear screws).
 - MCU USB: a plug-sized port at each board's own Nano USB, tall enough for a
   soldered or socketed Nano. S trays come in two USB groups, `nano-a` and
-  `nano-b` (`print/src/groups.py`).
+  `nano-b` (`print/src/groups.py`). A snap-in plug (`usb_plug`) closes it,
+  the same part for both groups.
 - 2021 gen-1 slices are not supported.
 
 ## Open items
@@ -104,4 +105,3 @@ the folder that holds this repository, or in `$BREADS_REPOS`.
 - The legend source: a `slice.yaml` field or schematic net labels.
 - A stand that fastens to the backplane part's underside, in place of the loose
   feet.
-- A snap-in plug for the Nano USB window.

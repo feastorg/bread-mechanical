@@ -30,17 +30,18 @@ earlier case; the boss, pocket and spigot they test are the same now.
 | `panel_rlht.stl` | Front panel for Slice_RLHT, legend engraved 0.6 |
 | `panel_aqph.stl` | Front panel for Slice_AQPH (open-bottom notch for the mated BNC plug) |
 | `panel_blank.stl` | Blank front panel, for any S slice with nothing past its far edge; label it by hand |
+| `usb_plug.stl` | Snap-in cover for the Nano USB port, the same for every Nano case. Push it in from outside until both hooks click; prise it off by the cover edge |
 
 The panels print roof strip down; the legend is engraved in the fascia, which
 stands vertical.
 
 Print order: the coupons, then `s_tray_nano-b` + `s_lid` + `panel_rlht` for
 Slice_RLHT. Each case is three parts: the tray and lid as before, plus the
-panel, the one per-slice part. The port in both trays is the soldered plus
-socketed height (13.35 x 18.4) until RLHT's Nano mount is measured.
+panel, the one per-slice part. The USB port in both trays (13.35 x 18.4) fits a
+soldered or a socketed Nano; `usb_plug` closes it when no cable is in.
 
 Volume, from the STLs (x 1.27 g/cm³, not sliced): tray 39.9 g, lid 16.7 g,
-panel 6.0 to 6.4 g, tilt jig 9.2 g, the slide and legend coupons 0.1 to 2.9 g each.
+panel 6.0 to 6.4 g, USB plug 0.5 g, tilt jig 9.2 g, the slide and legend coupons 0.1 to 2.9 g each.
 
 ## Hardware
 

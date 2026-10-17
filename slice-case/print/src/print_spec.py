@@ -41,3 +41,4 @@ def s_lid(): return _part('s_lid', GROUPS['nano-a'], 'lid_print')
 def panel_rlht(): return _part('panel_rlht', 'Slice_RLHT', 'panel_print')
 def panel_aqph(): return _part('panel_aqph', 'Slice_AQPH', 'panel_print')
 def panel_blank(): return _part('panel_blank', GROUPS['nano-a'], 'panel_print', **BLANK)
+def usb_plug(): return _part('usb_plug', GROUPS['nano-a'], 'usb_plug_print')   # same plug for every Nano port
