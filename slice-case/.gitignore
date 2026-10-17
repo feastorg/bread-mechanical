@@ -1,0 +1,10 @@
+# check reports, renders and slicer output (regenerated)
+__pycache__/
+out/
+out-*/
+out-*.txt
+renders/
+renders-*/
+work/
+_work/
+*.gcode

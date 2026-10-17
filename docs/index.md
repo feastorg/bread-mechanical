@@ -15,6 +15,7 @@ Loaf backplane mounts, and related hardware.
 | File | Description |
 |---|---|
 | `slice_case.scad` | Parametric enclosure for BREADS-compatible Slice modules |
+| `slice-case/` | Parametric, data-driven Slice case and Loaf_x004 backplane part, with checks and print guide |
 | `nano.scad` | Arduino Nano mechanical reference model |
 
 ## Usage

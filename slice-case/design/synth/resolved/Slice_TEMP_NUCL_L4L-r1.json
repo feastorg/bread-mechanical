@@ -1,0 +1,266 @@
+{
+ "slice": "Slice_TEMP_NUCL_L4L-r1",
+ "params": {
+  "board_E": [
+   9.1,
+   109.1
+  ],
+  "board_A": [
+   -50.0,
+   95.0
+  ],
+  "holes": [
+   [
+    14.1,
+    89.874
+   ],
+   [
+    104.216,
+    89.859
+   ],
+   [
+    14.1,
+    -45.02
+   ],
+   [
+    104.166,
+    -44.886
+   ]
+  ],
+  "ret_A": [
+   -56.4,
+   101.4
+  ],
+  "env_N": [
+   -7.9,
+   22.1
+  ],
+  "seat_E": 6.7,
+  "board_top_N": -1.27,
+  "tongue_A": 12.7,
+  "tongue_E_min": 4.67,
+  "win_A": 15.4,
+  "win_N": [
+   -1.1,
+   5.92
+  ],
+  "win_E_max": 15.5,
+  "ret_N": 11.5,
+  "ear_t": 5.0,
+  "ear_hole_d": 3.8,
+  "socket_A": 12.7,
+  "socket_N": [
+   -1.27,
+   1.27
+  ],
+  "socket_E": [
+   2.67,
+   11.24
+  ],
+  "edge_notches": [],
+  "floor_reliefs": [],
+  "roof_windows": [],
+  "usb_ports": [],
+  "board_r": 5.0
+ },
+ "probe": {
+  "board_t": 1.67,
+  "pb_outline_E": [
+   9.1,
+   109.216
+  ],
+  "pb_outline_A": [
+   -50.02,
+   94.874
+  ],
+  "pb_corner_r": 5.0,
+  "pb_holes": [
+   [
+    14.1,
+    89.874,
+    5.0
+   ],
+   [
+    104.216,
+    89.859,
+    5.0
+   ],
+   [
+    14.1,
+    -45.02,
+    5.0
+   ],
+   [
+    104.166,
+    -44.886,
+    5.0
+   ]
+  ],
+  "pb_crt_top": [
+   [
+    56.0,
+    63.2,
+    -48.753,
+    -43.153
+   ],
+   [
+    27.096,
+    46.136,
+    -49.716,
+    1.074
+   ]
+  ],
+  "pb_crt_bot": [
+   [
+    13.0,
+    17.6,
+    -30.87,
+    -28.57
+   ],
+   [
+    13.2,
+    17.3,
+    -34.675,
+    -31.275
+   ],
+   [
+    15.35,
+    19.95,
+    -37.625,
+    -35.325
+   ],
+   [
+    18.05,
+    22.65,
+    -30.825,
+    -28.525
+   ],
+   [
+    18.05,
+    22.65,
+    -27.77,
+    -25.47
+   ],
+   [
+    18.07,
+    22.63,
+    -34.555,
+    -31.395
+   ]
+  ]
+ },
+ "panel": {
+  "panel_name": "",
+  "panel_headers": [],
+  "panel_labels": [],
+  "panel_notches": [
+   [
+    84.109,
+    95.609,
+    99.0
+   ],
+   [
+    -50.636,
+    -39.136,
+    99.0
+   ]
+  ],
+  "source": null
+ },
+ "report": {
+  "format": "L",
+  "format_source": "stopgap: pattern 'slice-standard-v0' names no format; pcb.dimensions '100mm x 145mm'",
+  "outline_vs_format": {
+   "board_file_E": [
+    9.1,
+    109.216
+   ],
+   "board_file_A": [
+    -50.02,
+    94.874
+   ],
+   "format_E": [
+    9.1,
+    109.1
+   ],
+   "format_A": [
+    -50.0,
+    95.0
+   ]
+  },
+  "thickness": {
+   "slice_yaml": 1.6,
+   "kicad_general": 1.67,
+   "interface_range": [
+    1.4,
+    1.8
+   ],
+   "in_range": true
+  },
+  "outline_ok": true,
+  "hole_fit": [
+   {
+    "case": [
+     14.1,
+     89.874
+    ],
+    "board": [
+     14.1,
+     89.874,
+     5.0
+    ],
+    "offset": 0.0
+   },
+   {
+    "case": [
+     104.216,
+     89.859
+    ],
+    "board": [
+     104.216,
+     89.859,
+     5.0
+    ],
+    "offset": 0.0
+   },
+   {
+    "case": [
+     14.1,
+     -45.02
+    ],
+    "board": [
+     14.1,
+     -45.02,
+     5.0
+    ],
+    "offset": 0.0
+   },
+   {
+    "case": [
+     104.166,
+     -44.886
+    ],
+    "board": [
+     104.166,
+     -44.886,
+     5.0
+    ],
+    "offset": 0.0
+   }
+  ],
+  "max_hole_offset": 0.0,
+  "mcu": {
+   "form_factor": "nucleo32",
+   "port": null
+  },
+  "legend": null,
+  "exception": {
+   "holes": "from_board",
+   "reason": "two holes up to 0.183 off the 5 mm inset (tools/boardgeom.py); a d4.7 spigot interferes",
+   "retire_by": "move the holes to the 5 mm inset in the board file"
+  },
+  "modifiers_source": "slice.yaml"
+ },
+ "board_file": "Slice_TEMP_NUCL_L4L-r1/hardware/BREAD_Slice.kicad_pcb",
+ "mcu_usb": []
+}

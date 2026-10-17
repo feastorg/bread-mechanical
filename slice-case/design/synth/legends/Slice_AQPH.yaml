@@ -1,0 +1,7 @@
+# Front-panel legend for Slice_AQPH. MOCK: slice.yaml interfaces.data.inputs[0].name PH_PROBE, written
+# as "pH PROBE" by hand, over the BNC J2. Stand-in for a slice data field that does not exist yet.
+# Format: see Slice_RLHT.yaml.
+name: AQPH
+groups:
+  - header: pH PROBE
+    refs: [J2]

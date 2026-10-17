@@ -1,0 +1,324 @@
+{
+ "id": "slot-interface-v1.1",
+ "status": "provisional - confirm the items in measure_on_real_parts before first print",
+ "units": "mm",
+ "prose": [
+  "The backplane part locates on the 8 bus-footprint holes (d3.3 at A +/-20 of every slot), never on the board outline. Relative to slot 1, gen1 and r3 are identical in every copper feature; only Edge.Cuts moved 3.714 mm. So one part fits both.",
+  "The backplane part owns alignment: a U guide (fin on +N, returns in A) rising to E 15 around each slice socket, giving 6.35 mm of guided travel before the pins meet. The case owns a matching empty bus window and a tongue under the socket.",
+  "Retention: two M3 screws per slice along -E, driven from the slice's far side past the case ends, into heat-set inserts in the backplane part. The ear pads are the only E stop; the guide, not the screw, locates the slice. Every slot carries towers T1 -56.4, T2 +56.4, T3 +101.4; each format selects two.",
+  "The stand bolts to the backplane part's underside outside the PCB footprint. It never touches a case."
+ ],
+ "scope": "Contract between (a) a cased slice, (b) the printed backplane part, (c) the Loaf_x004 PCB (gen1 5b8b9b9 and r3 ebf47df/7729595), and a placeholder for (d) the stand. Parts interact only through the features named here.",
+ "frame": {
+  "origin_B": "Centre of the slot's 10-pin row (loaf bus-footprint origin = pin centroid), on the loaf PCB top copper plane.",
+  "E": "Loaf PCB top-face normal, pointing away from the loaf. E=0 is the loaf top face. A slice inserts along -E.",
+  "A": "Along the pin row, positive toward pin 1. Loaf KiCad: A = y_B - y. Slice KiCad: A = y_B - y (pin 1 is toward the top edge on every slice).",
+  "N": "Slice board normal, positive toward the slice top (THT) face. N=0 is the socket contact axis. Loaf KiCad: N = -(x - x_B), i.e. +N points toward the loaf end carrying the chain-input header (J1 gen1 / J2 r3).",
+  "handedness": "(E, A, N) is right-handed on both boards: slice E=+x_s, A=-y_s, N=out-of-top; loaf E=out-of-top, A=-y_l, N=-x_l. Rigid motion, no mirror. Agrees with the gen-2 Loaf Support (ear holes at loaf x-11.5 from the pin row) and Pin Aligner (fin on loaf -x side).",
+  "source": "tools/loafparse.py, tools/sliceparse.py on the KiCad files; KiCad 3D models PinSocket_1x10_P2.54mm_Horizontal.step and PinHeader_1x10_P2.54mm_Vertical.step"
+ },
+ "pitch": 30.4,
+ "slots_per_loaf_x004": 4,
+ "case_max_thickness_N": 30.0,
+ "min_gap_between_cases": 0.4,
+ "slot_envelope_N": [
+  -7.9,
+  22.1
+ ],
+ "slot_envelope_note": "Hard rule is thickness <= 30.0. The split [-7.9, +22.1] contains the gen-2 as-built case [-7.87, +21.73]. The r3 board drawing (User.4 rects, commit 7729595) uses [-7.4, +22.6]; update it at source if this split is adopted.",
+ "slice_side_datums": {
+  "board_top_N": -1.27,
+  "board_bottom_N": "board_top_N - thickness (floats)",
+  "pin_row_from_bus_edge": 3.6,
+  "pin_row_E": 12.7,
+  "bus_edge_E": 9.1,
+  "socket_mouth_E": 2.67,
+  "socket_body": {
+   "A": [
+    -12.7,
+    12.7
+   ],
+   "N": [
+    -1.27,
+    1.27
+   ],
+   "E": [
+    2.67,
+    11.24
+   ]
+  },
+  "sources": "socket body 0..2.54 above board and mouth 10.03 from pin row: KiCad PinSocket_1x10_P2.54mm_Horizontal.step; pin row 3.6 from edge and 50.02/49.98 from the ends: sliceparse.py on 40 Slice_* boards; L long side is on +A (pin-1 side) on all 5 L boards; pin_row_E = seat_E + 6.0 from gen-2 top case (ear face x=-7.4, pin row x=-1.4).",
+  "board_thickness_range": [
+   1.4,
+   1.8
+  ]
+ },
+ "loaf_side_datums": {
+  "header_plastic_top_E": 2.54,
+  "header_pin_tip_E": 8.65,
+  "header_plastic": {
+   "A": [
+    -12.7,
+    12.7
+   ],
+   "N": [
+    -1.27,
+    1.27
+   ]
+  },
+  "sources": "KiCad PinHeader_1x10_P2.54mm_Vertical.step z 0..2.54, tip 8.647 (model, not the fitted part)"
+ },
+ "seat": {
+  "seat_E": 6.7,
+  "rule": "The E stop is the case ear pads on the backplane retention towers, both at seat_E. The socket then floats 0.13 above the header plastic (2.67 vs 2.54). Nothing else carries E load.",
+  "case_faces": "Every other case face lies at E >= seat_E + 0.3, except the socket and tongue inside the bus window.",
+  "backplane_faces": "Every backplane-part face lies at E <= seat_E - 0.3, except the tower top faces (= seat_E) and the guide inside the bus window.",
+  "source": "gen-2 Loaf Support: ear seat face z=-10.7, loaf pocket floor z=-19.0, board 1.6 -> 6.7 above loaf top (loops.py loafx04_support)"
+ },
+ "bus_edge_zone": {
+  "owner": "case may occupy only this below seat_E + 0.3; backplane may occupy only the guide inside it above seat_E - 0.3",
+  "case_tongue": {
+   "A": [
+    -12.7,
+    12.7
+   ],
+   "N": [
+    -7.9,
+    -1.27
+   ],
+   "E_min": 4.67,
+   "purpose": "carries insertion load off the socket solder joints (gen-2: 25.4 wide, 4.43 past board edge)"
+  },
+  "case_bus_window": {
+   "A": [
+    -15.4,
+    15.4
+   ],
+   "N": [
+    -1.1,
+    5.92
+   ],
+   "E": [
+    6.4,
+    15.5
+   ],
+   "rule": "kept empty in the case so the backplane guide can enter. On the slice board this is a top-side keep-out: within 6.4 of the bus edge and |A| <= 15.4, only the bus socket."
+  },
+  "slice_board_keepout_check": "tools/windowscan.py 6.4 15.4 over 40 boards: 1 hit, Slice_IOCT D1 (DO-41, courtyard 2.56 past the bus edge) -> named exception"
+ },
+ "alignment": {
+  "owner": "backplane part",
+  "feature": "per-slot U guide around the slice socket body: a fin on +N and two end returns in A, open on -N",
+  "fin_inner_face_N": 1.42,
+  "fin_N": [
+   1.42,
+   5.42
+  ],
+  "returns_inner_A": 12.9,
+  "returns_A": [
+   12.9,
+   14.9
+  ],
+  "returns_N": [
+   -1.0,
+   5.42
+  ],
+  "guide_top_E": 15.0,
+  "lead_in": "1.5 x 45 deg chamfer on the top inner edges of fin and returns",
+  "guided_travel_before_pin_entry": 6.35,
+  "derivation": "socket mouth reaches guide top at 15.0-2.67 = 12.33 above seat; pins enter at 8.65-2.67 = 5.98 above seat",
+  "source": "gen-2 Pin Aligner: fin loaf x -5.35..-1.35, height 15 above its base (loops.py loafx04_pinalign z 26..39), reported working"
+ },
+ "retention": {
+  "type": "screw along -E from the slice far side, into a heat-set insert in the backplane part",
+  "point_N": 11.5,
+  "screw": "M3 x 10 socket head (ISO 4762), 2 per slice",
+  "case_ear": {
+   "pad_face_E": 6.7,
+   "thickness_E": 5.0,
+   "hole_d": 3.8,
+   "N_range_max": [
+    6.5,
+    16.5
+   ],
+   "hole_shape": "teardrop, point toward -N (up when the THT-side part prints roof-down), 45 deg",
+   "N_range_max_note": "pad land only; buttressing beyond it is allowed inside the slot envelope at E >= seat_E + 0.3"
+  },
+  "backplane_tower": {
+   "top_E": 6.7,
+   "footprint_d_max": 10.0,
+   "insert": "M3 heat-set, hole d4.0 (the user's gen-1 pocket size), depth >= 6.5, d3.2 relief below",
+   "towers_per_slot": "all ids in retention.towers"
+  },
+  "driver_access": "cylinder d7.0 on each retention axis from E = 11.7 to beyond the case far edge; no case (own or neighbour) may enter it. Within the slot's own N envelope, so packing at 30.4 never blocks it.",
+  "no_loose_nuts": "inserts only in the backplane part; case ears are plain clearance holes",
+  "source": "A +/-56.4 and N +11.5: gen-2 Loaf Support (loops.py loafx04_support z=-11: holes at u -53.2 vs bus holes -41.7; v +/-56.4). Keeping them lets gen-2 cases screw into the new part and new cases into the gen-2 support.",
+  "towers": {
+   "T1": -56.4,
+   "T2": 56.4,
+   "T3": 101.4
+  },
+  "towers_note": "Every slot carries all towers, at point_N. Formats select towers by id (bread-infra format table). Guidance for a new format: ear 6.4 beyond the board end, i.e. pick or add the tower there."
+ },
+ "backplane_to_loaf_pcb": {
+  "locate_and_fasten": "8 x NPTH d3.3 per loaf at A = +/-20, N = 0 of every slot; M3 x 6 from the loaf underside into heat-set inserts in the backplane part (bosses d8 at the holes, top <= 6.4)",
+  "slot_u_from_slot1": [
+   0.0,
+   30.4,
+   60.8,
+   91.2
+  ],
+  "u_definition": "u = x_kicad - x_slot1 = -N of slot 1",
+  "outline_u": {
+   "gen1_5b8b9b9": [
+    -18.9,
+    102.3
+   ],
+   "r3_7729595": [
+    -22.614,
+    98.6
+   ],
+   "union": [
+    -22.614,
+    102.3
+   ]
+  },
+  "outline_A": {
+   "gen1": [
+    -25.0,
+    25.02
+   ],
+   "r3": [
+    -24.98,
+    25.02
+   ]
+  },
+  "identical_in_both_revs_relative_to_slot1": "bus footprints, d3.3 holes, barrel jack, chain-connector pin rows and all top-side THT pads; only Edge.Cuts moved (3.714)",
+  "loaf_top_keepouts_E_max_3.3": [
+   {
+    "what": "bus header plastic",
+    "u": "slot +/-1.4",
+    "A": [
+     -13.0,
+     13.0
+    ],
+    "E_max": 2.54
+   },
+   {
+    "what": "J1/J2 chain-input THT tails",
+    "u": [
+     -13.45,
+     -11.75
+    ],
+    "A": [
+     -12.29,
+     12.27
+    ]
+   },
+   {
+    "what": "J6/J7 chain-output THT tails",
+    "u": [
+     94.05,
+     95.75
+    ],
+    "A": [
+     -12.29,
+     12.27
+    ]
+   },
+   {
+    "what": "barrel jack THT tails",
+    "u": [
+     9.35,
+     21.85
+    ],
+    "A": [
+     -21.43,
+     -10.68
+    ]
+   }
+  ],
+  "loaf_bottom_keepouts": [
+   {
+    "what": "barrel jack body, plug enters from -A edge",
+    "u": [
+     9.6,
+     21.6
+    ],
+    "A": [
+     -25.18,
+     -11.18
+    ],
+    "E": [
+     -10.6,
+     -1.6
+    ]
+   },
+   {
+    "what": "J1/J2 chain-input header, past the outline",
+    "u": [
+     -23.14,
+     -10.83
+    ],
+    "A": [
+     -13.21,
+     13.19
+    ],
+    "E": [
+     -4.14,
+     -1.6
+    ]
+   },
+   {
+    "what": "J6/J7 chain-output socket, past the outline",
+    "u": [
+     93.15,
+     105.45
+    ],
+    "A": [
+     -13.23,
+     13.17
+    ],
+    "E": [
+     -4.14,
+     -1.6
+    ]
+   },
+   {
+    "what": "M3 screw heads",
+    "at": "the 8 d3.3 holes",
+    "E": [
+     -4.6,
+     -1.6
+    ]
+   }
+  ],
+  "print": "whole backplane part at E >= 0, printed on its E=0 face, no supports; underside inserts installed from that face",
+  "sources": "tools/loafkeepout.py and tools/thtpads.py on git show <rev>:hardware/BREAD_Loaf.kicad_pcb; heights from KiCad 3D models (jack 9.0, headers 2.54, tails 3.3)"
+ },
+ "stand": {
+  "status": "placeholder",
+  "attaches_to": "backplane part only, never the case or the loaf PCB",
+  "face": "backplane E=0 face outside the PCB union footprint (|A| >= 25.5 or u outside [-23.0, 102.6])",
+  "fastening": "M3 from the stand side into heat-set inserts in the backplane part; pattern TBD",
+  "must_clear": "loaf_bottom_keepouts; barrel-jack plug path along +A at u 9.6..21.6; chain connectors at both ends"
+ },
+ "measure_on_real_parts": [
+  "Loaf PCB: header plastic height and pin tip above the board top. Model values are 2.54 and 8.65; the 0.13 float and the 6.35 guided travel depend on them.",
+  "Slice: socket centreline above the board top. The model gives 1.27; it sets board_top_N.",
+  "Gen-2 support with the loaf fitted: ear-seat face to loaf top. The STL gives 6.7 if the board rests on the z=-19 face.",
+  "Gen-2 assembled slice in the support: socket mouth to header plastic gap. It should be about 0.1 if seat_E = 6.7 is right.",
+  "Gen-2 case: ear-hole centre to slice board top, in N. Expect 11.5 + 1.27 = 12.77; the STL frame gives 13.0. This settles N 11.5 versus 11.7.",
+  "Gen-2 support: does an r3 board drop in? The hole pattern matches; the outline extends 3.71 further at the slot-1 end.",
+  "Gen-2 aligner: confirm the 2.0 x 26.5 underside groove at +3.7 clears the J6/J7 tails at slot 4, and measure the tail height (model 3.3).",
+  "Gen-2 case outline in A (104.8 from STL): confirm the ears clear neighbours and a long 2.5 mm hex key reaches the ear heads from the far side with 4 slices packed."
+ ],
+ "changes_from_v1": [
+  "id -> slot-interface-v1.1",
+  "retention: a fixed tower set (T1 -56.4, T2 +56.4, T3 +101.4) is the slot contract; a format row in the format table selects towers by id. Removes retention.points_A per format, rule_A as a rule, towers_per_slot as 'union of formats', and slice_side_datums.format_extent_A. A new format that needs a new tower position is a backplane reprint, and the format table says so by naming an unknown id.",
+  "retention.case_ear.hole_d 3.4 -> 3.8, printed as a teardrop: the guide sets the slice position; the screw only clamps (M3 in 3.8 leaves +/-0.4, larger than the guide's 0.15/0.2 clearance).",
+  "retention.case_ear.N_range_max describes the pad land only; a case may buttress the ear further in N inside its own slot envelope at E >= seat_E + 0.3.",
+  "slice_side_datums.board_thickness -> board_thickness_range [1.4, 1.8]: board_top_N is the datum (socket sits on it); the board's underside floats with thickness, and a case must absorb that inside the envelope."
+ ],
+ "named_exceptions_moved_to": "format table exceptions list (bread-infra stand-in: synth/formats.yaml)"
+}
