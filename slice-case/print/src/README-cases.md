@@ -15,6 +15,7 @@ panel is `panel.scad`, included by it), with parameters from
 | `panel_rlht.stl` | Slice_RLHT, legend from `design/synth/legends/Slice_RLHT.yaml` (MOCK), engraved 0.6 | roof strip | 14.7 x 102.3 x 29.6 |
 | `panel_aqph.stl` | Slice_AQPH, legend from `legends/Slice_AQPH.yaml` (MOCK), BNC notch from the board | roof strip | 14.7 x 102.3 x 29.6 |
 | `panel_blank.stl` | no legend, no notches | roof strip | 14.7 x 102.3 x 29.6 |
+| `usb_plug.stl` | Slice_TEMP_NANO_S2L-r2 port (the same plug fits both USB groups) | cover face | 16.4 x 21.4 x 3.8 |
 `python3 -I groups.py` lists which slices each tray and the lid serve; a tray
 group is the set of slices that resolve to identical tray parameters.
 
@@ -37,6 +38,12 @@ group is the set of slices that resolve to identical tray parameters.
 - USB: a 13.35 x 18.4 port (R1.5 corners) centred on the board's own Nano
   USB, in place of the 26.4 x 21.8 window. Its height covers a soldered and a
   socketed Nano (`formats.yaml` `mcu_access.nano`).
+- USB plug (`case.scad` `usb_plug`): a 1.2 cover, 1.5 past the port edge, on
+  the outer wall face, held by two snap arms (0.7 x 6) through the port at its E
+  edges, 0.15 from the edge. Each hook catches the inner wall face by 0.25
+  (`plug_lip` - `plug_gap`). The arms stay clear of the Nano receptacle, which
+  on the `nano-b` boards sits in the port 0.17 in from the outer face, so the
+  plug has no body in the port. `plug_lip` and `plug_gap` are the fit to tune.
 
 ## Print notes
 
@@ -49,6 +56,7 @@ Downward-facing area off the bed, from `design/synth/tools/overhang.py`
   (76.6 mm² at z 3.2).
 - Panels, roof strip down: RLHT 148.7, AQPH 42.0, blank 4.2 mm². The panel
   figures are mostly the tops of the engraved strokes in the vertical fascia.
+- USB plug, cover face down: 4.8 mm², the two 0.4 hook ledges at z 3.25.
 
 ## Checklist
 
@@ -78,6 +86,6 @@ partspec measure print_spec.py:<target> --out ../2-cases/<name>.stl
 ```
 
 Targets: `s_tray_nano_a`, `s_tray_nano_b`, `s_lid`, `panel_rlht`,
-`panel_aqph`, `panel_blank`. Each checks that the part is watertight, is one
+`panel_aqph`, `panel_blank`, `usb_plug`. Each checks that the part is watertight, is one
 solid, and has nothing below z = 0. The legend needs the DejaVu Sans Condensed
 Bold font on the machine that runs OpenSCAD.

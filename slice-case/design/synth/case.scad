@@ -203,6 +203,29 @@ module usb_port(p) let(a0 = p[0] == "-A" ? case_A[0] - 1 : case_A[1] - wall - 1)
     translate([0, a0, 0]) rotate([-90, 0, 0]) linear_extrude(wall + 2)
         translate([p[1], -(p[3] + p[4]) / 2]) offset(r = p[5], $fn = 24) square([p[2] - 2 * p[5], p[4] - p[3] - 2 * p[5]], center = true);
 
+// USB plug (separate part, -A ports): a cover on the outer wall face plus two snap arms through the port at its
+// E edges, clear of a Nano receptacle that sits inside the port (nano-b: its face is 0.17 in from the outer face)
+plug_gap = 0.15;               // arm to port edge
+plug_fl = 1.2;                 // cover thickness
+plug_margin = 1.5;             // cover past the port edge
+arm_t = 0.7;                   // snap arm thickness along E; flexes toward the port centre
+arm_h = 6.0;                   // snap arm length along N
+plug_lip = 0.4;                // hook: overlaps the inner wall face by plug_lip - plug_gap
+module plug_cover2d(p, o) translate([p[1], -(p[3] + p[4]) / 2]) offset(r = p[5] + plug_margin + o, $fn = 24)
+    square([p[2] - 2 * p[5], p[4] - p[3] - 2 * p[5]], center = true);
+module along_A(a_lo, a_hi) translate([0, a_lo, 0]) rotate([-90, 0, 0]) linear_extrude(a_hi - a_lo) children();
+module usb_plug(p) let(c = p[1], n = (p[3] + p[4]) / 2, a0 = case_A[0], a1 = case_A[0] + wall) {
+    hull() {                                                   // cover, bed-edge chamfer on its outer face
+        along_A(a0 - plug_fl, a0 - plug_fl + bed_chamfer) plug_cover2d(p, -bed_chamfer);
+        along_A(a0 - plug_fl + bed_chamfer, a0) plug_cover2d(p, 0);
+    }
+    for (s = [-1, 1]) let(eo = c + s * (p[2] / 2 - plug_gap), ei = eo - s * arm_t) {
+        box([min(eo, ei), max(eo, ei)], [a0 - eps, a1 + 0.2 + plug_lip], [n - arm_h / 2, n + arm_h / 2]);
+        translate([0, 0, n - arm_h / 2]) linear_extrude(arm_h)     // hook: square catch, 45 deg lead-in
+            polygon([[eo - s * 0.1, a1 + 0.05], [eo + s * plug_lip, a1 + 0.05], [eo + s * plug_lip, a1 + 0.2], [eo - s * 0.1, a1 + 0.2 + plug_lip]]);
+    }
+}
+
 // full-height end flange with the ear, in the (|A|, N) plane on the side of a; roof corner chamfered
 module flange2d(a) {
     aa = abs(a); r = pad_d / 2; A1 = a > 0 ? case_A[1] : -case_A[0]; N0 = case_N[0]; N1 = case_N[1];
@@ -301,6 +324,7 @@ module below_seat_allowed() {
 module tray_bed() translate([0, 0, case_N[1]]) rotate([180, 0, 0]) children();            // roof down
 module lid_bed() translate([0, 0, -(case_N[0] + lid_dz)]) children();                      // outer face down
 module panel_bed() translate([0, 0, case_N[1]]) rotate([180, 0, 0]) children();           // roof strip down
+module plug_bed() rotate([90, 0, 0]) translate([0, -(case_A[0] - plug_fl), 0]) children(); // cover face down
 
 if (part == "tray") tray();
 if (part == "lid") lid();
@@ -332,3 +356,11 @@ if (part == "probe_panel_locate") intersection() { tray(); translate(probe_dir *
 if (part == "probe_detent") intersection() { tray(); panel(probe_pull); box([0, 200], [0, 200], [-50, 50]); }
 if (part == "probe_legend_thin") legend_thin();
 if (part == "probe_legend_off_face") legend_off_face();
+// USB plug probes (spec.py): seated 0.02 off the outer face, against the board; pulled 0.3, its hooks must catch
+if (part == "usb_plug") for (p = usb_ports) usb_plug(p);
+if (part == "probe_plug_tray") intersection() { tray(); translate([0, -0.02, 0]) for (p = usb_ports) usb_plug(p); }
+if (part == "probe_plug_board") intersection() { for (p = usb_ports) usb_plug(p); board_probe(); }
+if (part == "probe_plug_pulled") for (p = usb_ports) intersection() {   // only overlap reaching 0.1 past the port edge
+    tray(); translate([0, -0.3, 0]) usb_plug(p);
+    difference() { box([-200, 200], [-200, 200], [-50, 50]); box([p[1] - p[2] / 2 - 0.1, p[1] + p[2] / 2 + 0.1], [-200, 200], [-50, 50]); }
+}

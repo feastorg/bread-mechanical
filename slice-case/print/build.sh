@@ -14,5 +14,5 @@ build() {   # <spec dir> <spec file> <out dir> <target>[=<file name>]...
 }
 build "$P/src" coupons_spec.py 1-coupons insert_ladder spigot_ladder hole_plate ear_ladder stack_tray stack_lid \
     slide_tray slide_panel legend_strip tilt_jig
-build "$P/src" print_spec.py 2-cases s_tray_nano_a=s_tray_nano-a s_tray_nano_b=s_tray_nano-b s_lid panel_rlht panel_aqph panel_blank
+build "$P/src" print_spec.py 2-cases s_tray_nano_a=s_tray_nano-a s_tray_nano_b=s_tray_nano-b s_lid panel_rlht panel_aqph panel_blank usb_plug
 build "$P/../design/backplane" spec.py 3-backplane backplane stand_foot

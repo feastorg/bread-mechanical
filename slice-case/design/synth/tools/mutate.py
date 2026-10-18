@@ -1,6 +1,6 @@
 """Mutation sweep over case.scad and panel.scad: each mutation must redden its target check.
 
-Usage: python3 -I tools/mutate.py   (run from anywhere; restores each file after each mutation)
+Usage: python3 -I tools/mutate.py [name filter]   (run from anywhere; restores each file after each mutation)
 Runs every spec.py contract target (tools/targets.py) per mutation. Prints BROKEN when a mutation did not apply
 (pattern count != 1, or the file hash unchanged after writing), otherwise every failing (part, check) for it.
 Reports go to a fresh temporary directory under $TMPDIR.
@@ -60,6 +60,11 @@ MUTS = [
     (P, 'legend not emboldened (thin strokes)', 'lg_grow = 0.2;', 'lg_grow = 0.0;', 'probe-legend-thin'),
     (P, 'pin labels 3 lower (into the wire slot)', 'lab_top = rule_N[0] - lg_gap;', 'lab_top = rule_N[0] - lg_gap - 3;', 'probe-legend-off-face'),
     (P, 'header under the pull ridge', 'hdr_base = hdr_top - 3.3;', 'hdr_base = hdr_top - 1.5;', 'probe-legend-off-face'),
+    # USB plug
+    (C, 'usb plug hooks too short to catch', 'plug_lip = 0.4;', 'plug_lip = 0.15;', 'both-hooks-catch'),
+    (C, 'usb plug arms into the port edge', 'plug_gap = 0.15;', 'plug_gap = -0.1;', 'probe-plug-tray'),
+    (C, 'usb plug arms onto the Nano receptacle', 'arm_t = 0.7;', 'arm_t = 3.0;', 'probe-plug-board'),
+    (C, 'usb plug arms into the Nano module', 'a1 + 0.2 + plug_lip], [n - arm_h', 'a1 + 1.2 + plug_lip], [n - arm_h', 'probe-plug-board'),
 ]
 
 
@@ -85,7 +90,7 @@ base = run()
 print(f'{len(TARGETS)} targets')
 print('BASELINE', 'clean' if not base else base)
 try:
-    for f, name, old, new, target in MUTS:
+    for f, name, old, new, target in [m for m in MUTS if all(w in m[1] for w in sys.argv[1:])]:
         path = os.path.join(HERE, f)
         n = orig[f].count(old)
         mutated = orig[f].replace(old, new)
