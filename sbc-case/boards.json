@@ -1,0 +1,45 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "rpi4b": {
+            "sbc_model": "rpi4b",
+            "case_design": "shell",
+            "gpio_opening": "none",
+            "cooling": "vent",
+            "fan_size": "0",
+            "top_standoff_size": "custom",
+            "top_standoff_diameter": "6",
+            "top_standoff_insert": "true",
+            "top_standoff_insert_dia": "3.7",
+            "top_standoff_insert_height": "4.5",
+            "bottom_standoff_size": "m2.5+"
+        },
+        "rpi3a+": {
+            "sbc_model": "rpi3a+",
+            "case_design": "shell",
+            "gpio_opening": "none",
+            "cooling": "vent",
+            "fan_size": "0",
+            "top_standoff_size": "custom",
+            "top_standoff_diameter": "6",
+            "top_standoff_insert": "true",
+            "top_standoff_insert_dia": "3.7",
+            "top_standoff_insert_height": "4.5",
+            "bottom_standoff_size": "m2.5+"
+        },
+        "rpizero2w": {
+            "sbc_model": "rpizero2w",
+            "case_design": "shell",
+            "gpio_opening": "none",
+            "cooling": "none",
+            "fan_size": "0",
+            "top_standoff_size": "custom",
+            "top_standoff_diameter": "6",
+            "top_standoff_insert": "true",
+            "top_standoff_insert_dia": "3.7",
+            "top_standoff_insert_height": "4.5",
+            "bottom_standoff_size": "m2.5+",
+            "top_cover_pattern": "hex_5mm"
+        }
+    }
+}

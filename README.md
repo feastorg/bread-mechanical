@@ -7,6 +7,14 @@
 - `nano.scad` — Arduino Nano mechanical model
 - `slice_case.scad` — Slice enclosure design
 - `slice-case/` — Parametric, data-driven Slice case and Loaf_x004 backplane part, with checks and print guide
+- `sbc-case/` — Cases and a 2020 extrusion mount for the single-board computers that run a BREAD (Raspberry Pi
+  4B, 3A+, Zero 2 W), built on SBC Case Builder, with checks and print guide. `GPL-3.0-or-later` only
+
+## Dependencies
+
+`sbc-case/` uses OpenSCAD libraries pinned with [scadman](https://github.com/CameronBrooks11/scadman) in
+`scadman.toml` / `scadman.lock`. Run `scadman sync` once in a checkout; `scadman env` prints the
+`OPENSCADPATH` to use.
 
 ## License
 
