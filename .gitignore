@@ -13,3 +13,12 @@
 # OS
 .DS_Store
 Thumbs.db
+
+# scadman environment
+.scadman/
+
+# partspec reports
+outputs/
+
+# Python bytecode
+__pycache__/

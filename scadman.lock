@@ -1,0 +1,13 @@
+version = 1
+
+[[package]]
+name = "SBC_Case_Builder"
+source = "https://github.com/hominoids/SBC_Case_Builder"
+rev = "5979914bc23aa0d85da592be4c37b6ed97c20ddf"
+hash = "cea43d4e103f0cabf281fc5b2d79fd44d55a14bc1d4597117f990a459396d0a7"
+
+[[package]]
+name = "SBC_Model_Framework"
+source = "https://github.com/hominoids/SBC_Model_Framework"
+rev = "cc1935c2e7c2e7c1ae4c2fad63a188128954935c"
+hash = "07e106d9b60ff7ab38569a4d6c84f60766a757933cccbc9d9d6378d9f60895df"
