@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Every resolved slice through the default case (plus its modifiers and panel data): board probe, assembly, panel.
 Targets: sweep_spec.py:p_<i> (probe_board), a_<i> (assembly), n_<i> (panel); i follows sorted resolved/*.json."""
 import glob

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """partspec targets for the v2 calibration coupons (coupons.scad). Case parameters come from
 design/synth/resolved/<slice>.json, passed to OpenSCAD as design/synth/spec.py passes them.
 

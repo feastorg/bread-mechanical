@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Mutation sweep over case.scad and panel.scad: each mutation must redden its target check.
 
 Usage: python3 -I tools/mutate.py [name filter]   (run from anywhere; restores each file after each mutation)

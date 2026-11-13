@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """partspec contract for the backplane part (backplane.scad) and its loose stand feet.
 
 Interface values come from design/synth/slot-interface-v1.1.json and are passed as -D. The clash check uses

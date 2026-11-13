@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 # Usage: tools/render.sh <slice> <out.png> <scene> <camera> [extra openscad -D ...]
 # camera: rx,ry,rz (framed with --viewall) or tx,ty,tz,rx,ry,rz,dist. Renders viz/scenes.scad with the slice's
 # resolved parameters and panel data, as spec.py passes them. Full render (Manifold), Tomorrow colour scheme.

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Backplane part for Loaf_x004 (gen1 5b8b9b9 and r3), per slot-interface-v1.1.
 // World: X = u (loaf KiCad x from the slot-1 bus origin), Y = A (pin 1 +), Z = E (away from the loaf top).
 // A slot's N maps to u = k * pitch - N.

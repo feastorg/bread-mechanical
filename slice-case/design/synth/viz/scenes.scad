@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Visual-only scenes for renders (tools/render.sh). Not a deliverable.
 include <../case.scad>
 scene = "closed";       // closed | open | packed | front | flange | usb | panel_print | tray_print | lid_print | section

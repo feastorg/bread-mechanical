@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Print the spec.py contract targets (not the render-only ones). Usage: partspec check $(python3 -I tools/targets.py)"""
 CASE = ['tray', 'lid', 'assembly', 'probe_board', 'probe_board_only', 'probe_parts', 'probe_below_seat']
 PANEL = ['panel', 'panel_swept', 'probe_panel_closed', 'probe_panel_lid', 'probe_panel_slide', 'probe_panel_shift',

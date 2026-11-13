@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Parse a Loaf .kicad_pcb (stdin) and print outline, footprints, NPTH/mounting holes.
 Usage: git -C <repo> show <rev>:hardware/BREAD_Loaf.kicad_pcb | python3 -I loafparse.py
 """

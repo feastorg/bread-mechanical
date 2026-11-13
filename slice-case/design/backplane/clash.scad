@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Check only: a cased slice (tray, lid, panel, board and bus socket) in every slot, intersected with the
 // backplane part. The case takes its -D parameters from resolved/<slice>.json (spec.py); the backplane uses
 // its file defaults, which spec.py checks against slot-interface-v1.1.json.

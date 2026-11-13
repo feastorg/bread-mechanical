@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Top-side THT pad bboxes of B.Cu footprints, frame of loafkeepout.py (u from slot1, a=+toward pin1)."""
 import sys
 sys.path.insert(0, __import__('os').path.dirname(__file__))

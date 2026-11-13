@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Which slices each case STL serves. Usage: python3 -I groups.py
 
 Groups the resolved slices by the parameters the tray and the lid are built from (resolved params; the panel data

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Downward-facing area in print orientation.  python3 -I overhang.py <binary.stl> <+z|-z>
 '+z' prints with the model's z up (bed at zmin); '-z' flips (bed at zmax).  Reports facets steeper than
 45 deg past vertical (normal_z < -cos45) that are not on the bed, grouped by height above the bed and

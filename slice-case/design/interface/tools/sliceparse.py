@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Slice bus geometry: python3 -I sliceparse.py <BREAD_Slice.kicad_pcb>
 Prints outline (KiCad coords, y down), bus socket pins, Fab body extent, holes,
 all relative to the outline min corner, plus the body overhang past the nearest edge."""

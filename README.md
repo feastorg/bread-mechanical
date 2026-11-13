@@ -10,4 +10,6 @@
 
 ## License
 
-Hardware designs are licensed under CERN-OHL-S-2.0. See [LICENSE](./LICENSE).
+`GPL-3.0-or-later OR CERN-OHL-S-2.0`, at your choice, unless a file's own
+SPDX header names a narrower licence. See [LICENSING.md](./LICENSING.md);
+`LICENSES/` holds both texts.

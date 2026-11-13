@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Resolve one slice into case.scad parameters, board-probe parameters and a data report.
 
 Usage: python3 -I tools/resolve.py <Slice_name> [...]   (writes resolved/<slice>.json)

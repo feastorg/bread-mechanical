@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 # Break backplane.scad one value at a time and check that the named probe fails. Restores the file after each.
 # Prints KILLED (target among the failures), SURVIVED, or BROKEN (anchor not found exactly once / file unchanged).
 # Run from this directory: bash mutate.sh <scratch dir>
