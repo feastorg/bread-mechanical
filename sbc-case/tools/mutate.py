@@ -27,6 +27,8 @@ MUTS = [
      'cylinder(d = top_standoff_diameter * 2 / sqrt(3) + 2 * sc_standoff_ring, h = case_z + 1, $fn = 64);', 'gpio-window'),
     (B, 'insert pocket shorter than the insert', '"top_standoff_insert_height": "4.5",\n            "bottom_standoff_size": "m2.5+"\n        },\n        "rpi3a+"',
      '"top_standoff_insert_height": "3.5",\n            "bottom_standoff_size": "m2.5+"\n        },\n        "rpi3a+"', 'insert-pocket'),
+    (B, 'hex roof pattern back on the Zero', '"top_cover_pattern": "solid"', '"top_cover_pattern": "hex_5mm"',
+     'header-wall'),
     # bottom
     (B, 'bottom hole size-for-size', '"bottom_standoff_size": "m2.5+"\n        },\n        "rpi3a+"',
      '"bottom_standoff_size": "m2.5"\n        },\n        "rpi3a+"', 'screw-path'),

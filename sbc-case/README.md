@@ -21,7 +21,7 @@ Framework marks all three boards "yellow, unverified", so the first print is a f
 | Path | What |
 |---|---|
 | `sbc_case.scad` | The parts: `part = "lid"`, `"bottom"`, `"mount"`, `"coupon"`, `"assembly"`. Includes Case Builder, switches its own view off, and places its parts |
-| `boards.json` | Case Builder settings per board: shell, vents (hex roof on the Zero), M2.5 heat-set inserts in the lid standoffs, M2.5 clearance through the bottom |
+| `boards.json` | Case Builder settings per board: shell, roof vents on the 4B and 3A+ (solid roof on the Zero 2 W), M2.5 heat-set inserts in the lid standoffs, M2.5 clearance through the bottom |
 | `spec.py` | partspec checks for every part on every board, and where each limit comes from |
 | `tools/board_data.scad` | Echoes the board data and case dimensions `spec.py` places its checks with |
 | `tools/targets.py` | Prints every `spec.py` target |
@@ -62,7 +62,8 @@ python3 -I tools/mutate.py    # each mutation must fail its check
 What is checked, per board:
 
 - **Lid**: watertight, one solid; the GPIO pin field is open through the roof; the window leaves every top
-  standoff's wall intact; each standoff has room for an M2.5 x 4.0 insert.
+  standoff's wall intact; each standoff has room for an M2.5 x 4.0 insert; the header-side wall is whole along
+  its length.
 - **Bottom**: watertight, one solid; an M2.5 screw passes the floor and standoff at every board hole.
 - **Mount**: watertight, one solid, six through-holes; the M2.5 shank and ISO 4762 head fit; the head seats at
   the depth the screw stack sets (below); the M5 shank and head fit, the head below the plate's top face;
@@ -89,6 +90,10 @@ What is checked, per board:
 - **Extrusion across the short side.** All three boards have their holes 58 mm apart in x, so the M2.5 heads
   sit well clear of a 20 mm face. Along the long side, the Zero's heads (23 mm apart) would sit at the
   extrusion's edge.
+- **Solid roof on the Zero 2 W.** Its pin field ends 0.4 mm from the board edge, so the window leaves almost
+  no roof beside the wall, and Case Builder's hex roof pattern (which covers the whole roof) then cut the
+  header-side wall into posts. The Zero runs cool at control loads; its roof keeps only the window. The
+  header-wall check fails on the hex pattern.
 - **GPIO access is for jumpers.** The two header-side standoffs are 52 mm apart (4B, 3A+): a 40-pin IDC
   connector's body is longer than that and cannot reach the header with the lid on.
 

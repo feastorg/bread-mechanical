@@ -39,7 +39,7 @@
             "top_standoff_insert_dia": "3.7",
             "top_standoff_insert_height": "4.5",
             "bottom_standoff_size": "m2.5+",
-            "top_cover_pattern": "hex_5mm"
+            "top_cover_pattern": "solid"
         }
     }
 }
