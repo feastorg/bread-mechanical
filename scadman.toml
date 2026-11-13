@@ -1,0 +1,13 @@
+[project]
+name = "bread-mechanical"
+
+# SBC Case Builder has no releases; pinned to an exact commit (2026-10-06).
+[dependencies.SBC_Case_Builder]
+git = "https://github.com/hominoids/SBC_Case_Builder.git"
+rev = "5979914bc23aa0d85da592be4c37b6ed97c20ddf"
+
+# The board models Case Builder carries as a git submodule, at the commit
+# that Case Builder pin records.
+[dependencies.SBC_Model_Framework]
+git = "https://github.com/hominoids/SBC_Model_Framework.git"
+rev = "cc1935c2e7c2e7c1ae4c2fad63a188128954935c"
