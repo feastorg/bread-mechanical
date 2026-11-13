@@ -49,7 +49,7 @@ sc_engagement = 3.5;        // thread into the lid insert, from the standoff fac
 
 // ---- coupon: M2.5 insert pockets -----------------------------------------------------------
 sc_coupon_rungs = [3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0];
-sc_coupon_pitch = 9;
+sc_coupon_pitch = 14;
 
 // ---- board data (SBC Model Framework) ------------------------------------------------------
 function sc_entry(m) = sbc_data[search([m], sbc_data)[0]];
@@ -144,21 +144,25 @@ module sc_mount() {
 }
 
 // Insert-pocket ladder: one hex boss per rung, the same diameter and pocket depth as the lid's
-// top standoffs, standing on a base plate with the rung engraved beside it.
+// top standoffs, standing on a base plate with the rung engraved in front of it (4.5 mm text, as
+// slice-case's coupons).
+// One decimal place, so 4.0 reads "4.0" (as slice-case's coupons).
+function sc_fmt(v) = str(floor(v + 1e-6), ".", round((v - floor(v + 1e-6)) * 10));
+
 module sc_coupon() {
     n = len(sc_coupon_rungs);
     boss_h = top_standoff_insert_height + 1.5;
     difference() {
         union() {
-            translate([-sc_coupon_pitch / 2, -6, 0]) cube([n * sc_coupon_pitch, 15, 1.5]);
+            translate([-sc_coupon_pitch / 2, -12, 0]) cube([n * sc_coupon_pitch, 17, 1.5]);
             for (i = [0 : n - 1]) translate([i * sc_coupon_pitch, 0, 0])
                 cylinder(d = top_standoff_diameter / cos(30), h = boss_h, $fn = 6);
         }
         for (i = [0 : n - 1]) {
             translate([i * sc_coupon_pitch, 0, boss_h - top_standoff_insert_height])
                 cylinder(d = sc_coupon_rungs[i], h = top_standoff_insert_height + 1, $fn = 48);
-            translate([i * sc_coupon_pitch, 6, 1.5 - 0.6]) linear_extrude(1)
-                text(str(sc_coupon_rungs[i]), size = 2.6, font = "DejaVu Sans:style=Bold", halign = "center", valign = "center");
+            translate([i * sc_coupon_pitch, -8, 1.5 - 0.6]) linear_extrude(1)
+                text(sc_fmt(sc_coupon_rungs[i]), size = 4.5, font = "DejaVu Sans:style=Bold", halign = "center", valign = "center");
         }
     }
 }

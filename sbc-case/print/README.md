@@ -8,7 +8,7 @@ every STL below from source.
 
 | File | What to do with it | Records |
 |---|---|---|
-| `insert_coupon.stl` | Seven hex bosses, the same size as the lid's top standoffs, with pockets of 3.4 to 4.0 mm (engraved beside each). Press an M2.5 x 4.0 heat-set insert into each. Take the smallest pocket where the insert goes in square, sits flush, and does not spin under an M2.5. | Insert hole Ø |
+| `insert_coupon.stl` | Seven hex bosses, the same size as the lid's top standoffs, with pockets of 3.4 to 4.0 mm (engraved in front of each). Press an M2.5 x 4.0 heat-set insert into each. Take the smallest pocket where the insert goes in square, sits flush, and does not spin under an M2.5. | Insert hole Ø |
 
 `boards.json` starts at 3.7 (`top_standoff_insert_dia`), an unverified figure. Set it to the coupon's
 answer before printing a case.

@@ -116,6 +116,12 @@ def _lid(board):
         p.keep_out(region.cylinder(d=3.3, h=INSERT_LEN,
                                    at=(hx, fy(hy), tz - d['bottom_height'] - INSERT_LEN), axis='z'),
                    shell=0.3, id=f'insert-pocket@{hx},{hy}')
+    # The header-side wall stays whole along its length, roof to rim: no roof pattern or window cuts it.
+    # (On the Zero 2 W, Case Builder's hex roof pattern and the window once left it a row of posts.)
+    y0, w = fy(d['case_y'][1]), d['wallthick']
+    p.keep_in(region.box(min=(d['case_x'][0] + 3, y0 + 0.3, 0.3),
+                         max=(d['case_x'][1] - 3, y0 + w - 0.3, tz - d['bottom_height'] - 1.0)),
+              shell=0.3, id='header-wall')
     return p
 
 
@@ -170,7 +176,7 @@ def coupon() -> Part:
     rungs = [3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0]   # sbc_case.scad sc_coupon_rungs, printed on each boss
     top = 4.5 + 1.5
     for i, r in enumerate(rungs):
-        p.keep_out(region.cylinder(d=r - 0.1, h=INSERT_LEN, at=(i * 9, 0, top - INSERT_LEN), axis='z'), shell=0.3,
+        p.keep_out(region.cylinder(d=r - 0.1, h=INSERT_LEN, at=(i * 14, 0, top - INSERT_LEN), axis='z'), shell=0.3,
                    id=f'pocket-{r}')
     return p
 
