@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 //Arduino Nano 328 et 168
 
 //______________________VARIABLES___________________________________________

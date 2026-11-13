@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Per-footprint courtyard (or Fab) bbox on a Loaf PCB, relative to slot 1 bus origin.
 Frame: u = x - x_slot1 (KiCad x), a = y_slot - y (so +a = toward bus pin 1).
 Usage: git show <rev>:hardware/BREAD_Loaf.kicad_pcb | python3 -I loafkeepout.py"""

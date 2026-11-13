@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """partspec targets for the print-oriented case STLs. Parameters come from design/synth/resolved/<slice>.json
 (tools/resolve.py), passed to OpenSCAD exactly as design/synth/spec.py does; print.scad only orients the real
 case geometry.

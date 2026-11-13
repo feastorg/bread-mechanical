@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Calibration coupons v2 for the slice case. Every rung uses case.scad's own parameters and modules
 // (boss_d, insert_depth, spigot_recess, relief_d, head_d, head_depth, floor_t, roof_t, ear/pad/teardrop,
 // bed_chamfer, facets); only the value under test changes per rung. The stack pair is cut from the

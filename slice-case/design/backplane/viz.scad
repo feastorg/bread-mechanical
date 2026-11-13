@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Visual only: the backplane with a cased slice in every slot (case params by -D, as clash.scad).
 include <../synth/case.scad>
 use <backplane.scad>

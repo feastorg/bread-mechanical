@@ -25,5 +25,6 @@ directly in OpenSCAD to render and export to STL for printing.
 
 ## License
 
-Hardware designs are licensed under
-[CERN-OHL-S-2.0](https://ohwr.org/cern_ohl_s_v2.txt).
+`GPL-3.0-or-later OR CERN-OHL-S-2.0`, at your choice, unless a file's own
+SPDX header names a narrower licence. See
+[LICENSING.md](https://github.com/feastorg/bread-mechanical/blob/main/LICENSING.md).

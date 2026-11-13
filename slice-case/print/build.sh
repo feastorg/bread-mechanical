@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 # Build every print STL from source into 1-coupons/, 2-cases/ and 3-backplane/ (STLs are not tracked).
 # Needs partspec and OpenSCAD with the Manifold backend. Run from anywhere: bash print/build.sh
 set -eu

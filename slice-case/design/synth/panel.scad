@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Front panel: the one per-slice printed part (REQUIREMENTS.md L2). Included by case.scad, so every number is
 // case.scad's; the per-slice data comes in by -D from tools/resolve.py:
 //   panel_notches  from the board file: an open-bottom fascia notch for each part that leaves the far face

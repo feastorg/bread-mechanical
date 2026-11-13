@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Slice board geometry in the slot frame (E, A) of slot-interface-v1.
 
 Usage: python3 -I boardgeom.py <BREAD_Slice.kicad_pcb> [--fps]

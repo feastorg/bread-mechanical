@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """Summarise partspec reports under a directory: every non-pass check. Usage: python3 -I tools/fails.py <out dir>"""
 import glob, json, os, sys
 n = bad = 0

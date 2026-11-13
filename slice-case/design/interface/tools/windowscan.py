@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """List top-side (F.Cu) footprints whose courtyard/fab bbox intersects the bus-window strip:
 x in [0, XMAX] from the bus (left) edge, |y - y_bus| <= HALF.  Usage: windowscan.py XMAX HALF pcb..."""
 import sys

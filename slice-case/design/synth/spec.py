@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 """partspec contract for the slice case: tray + lid + sliding front panel (case.scad, panel.scad).
 
 Parameters come from resolved/<slice>.json (tools/resolve.py: formats.yaml + slot-interface-v1.1.json

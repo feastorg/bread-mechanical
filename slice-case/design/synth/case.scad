@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 // Slice case: one-sided clamshell (tray + lid) with a sliding front panel.
 // World frame = slot frame of slot-interface-v1.1: X = E (away from the loaf), Y = A (pin 1 +),
 // Z = N (slice top/THT side +). Origin B = centre of the slice bus pin row.

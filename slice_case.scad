@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR CERN-OHL-S-2.0
 $fn = $preview ? 64 : 128;
 zFite = $preview ? 0.1 : 0;
 
