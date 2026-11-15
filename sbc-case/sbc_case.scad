@@ -4,9 +4,12 @@
 //   - a window in the lid roof over the GPIO header, so jumpers to the Loaf
 //     plug in with the lid on (Case Builder's gpio_opening = "open" cuts the
 //     side wall only), and
-//   - an extrusion mount: a plate under the case that the case's own four
-//     M2.5 screws pass through, held on the extrusion by two screws into
-//     T-nuts. The extrusion runs along y, under the middle of the hole pattern.
+//   - an extrusion mount: a plate under the case, held on the extrusion by two
+//     screws into T-nuts. The extrusion runs along y, under the middle of the
+//     hole pattern. The case closes on its own (four countersunk M2.5 screws
+//     up through the floor into the lid's inserts) and fastens to the plate by
+//     two ears on the bottom, one past each short end, with an M3 screw down
+//     through each into an insert in the plate: the closed case lifts off.
 //
 // Case Builder and SBC Model Framework are pinned in ../scadman.toml; run with
 // OPENSCADPATH=$(scadman env). Case Builder's settings come in as -D (or
@@ -27,6 +30,7 @@ part = "lid";   // lid | bottom | mount | coupon | assembly
 sc_pitch = 2.54;            // 0.1 in header pitch
 sc_gpio_margin = 1;         // clearance around the pin field, each side
 sc_standoff_ring = 0.5;     // material the window leaves around each top standoff
+sc_member_w = 3;            // roof strip between the window and the vents, so each vent bar is held at both ends
 
 // ---- mount ---------------------------------------------------------------------------------
 sc_plate_t = 8;
@@ -40,12 +44,18 @@ sc_bolt_spacing = undef;    // centre to centre along the extrusion; undef: up t
 sc_key = false;             // locating key into the slot
 sc_slot_w = 6;              // 20-series slot opening
 sc_key_h = 1.5;
-// Case screws: M2.5 socket head (ISO 4762) from under the plate into the lid's inserts.
-sc_screw_len = 16;
-sc_screw_clear_d = 2.7;     // ISO 273 fine, M2.5
-sc_head_d = 4.5;            // ISO 4762 M2.5 dk
-sc_head_k = 2.5;            // ISO 4762 M2.5 k
-sc_engagement = 3.5;        // thread into the lid insert, from the standoff face
+// Case screws: M2.5 countersunk, up through Case Builder's countersunk floor holes into the lid's
+// inserts. The length is the longest stock length whose thread into the insert stays in the pocket.
+sc_cs_lengths = [6, 8, 10, 12, 16, 20];
+sc_min_engagement = 2.5;
+// Ears: on the bottom, at floor level, centred on each short end; an M3 socket head goes down
+// through each into an M3 x 5.7 heat-set insert in the plate (slice-case's insert and pocket).
+sc_ear_t = 4;
+sc_ear_l = 11;              // out from the case end; the screw sits sc_ear_w / 2 in from its tip
+sc_ear_w = 11;
+sc_ear_clear_d = 3.4;       // ISO 273 medium, M3
+sc_ear_insert_d = 4.0;      // slice-case insert_hole_d
+sc_ear_insert_depth = 6.7;  // insert 5.7 + 1.0, as slice-case
 
 // ---- coupon: M2.5 insert pockets -----------------------------------------------------------
 sc_coupon_rungs = [3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0];
@@ -81,33 +91,40 @@ sc_spacing = is_undef(sc_bolt_spacing)
     ? min(30, (sc_y[1] - sc_y[0]) - (sc_bolt_head_d + sc_head_clear) - 2 * 2) : sc_bolt_spacing;
 sc_bolts = [[sc_ex, sc_ey - sc_spacing / 2], [sc_ex, sc_ey + sc_spacing / 2]];
 // Screw stack: the lid's insert starts at the top standoff face, which Case Builder puts at
-// bottom_height (the board's top face as modelled). The screw's shank left in the plate is
-// what remains of its length; the counterbore takes the rest of the plate.
-sc_shank = sc_screw_len - (bottom_height + sc_engagement);
-sc_cb = sc_plate_t - sc_shank;
+// bottom_height (the board's top face as modelled), and a countersunk head ends at the floor's
+// underside, so a screw of length l reaches l - bottom_height into the insert.
+sc_case_screws = [for (l = sc_cs_lengths)
+    if (l - bottom_height >= sc_min_engagement && l - bottom_height <= top_standoff_insert_height - 0.5) l];
+sc_case_screw = sc_case_screws[len(sc_case_screws) - 1];
+sc_ears = [[sc_x[0] - sc_ear_l + sc_ear_w / 2, (sc_y[0] + sc_y[1]) / 2],
+           [sc_x[1] + sc_ear_l - sc_ear_w / 2, (sc_y[0] + sc_y[1]) / 2]];
+sc_mx = [sc_x[0] - sc_ear_l, sc_x[1] + sc_ear_l];   // the plate runs under both ears
 
-if (part == "mount" || part == "assembly") {
-    assert(sc_engagement <= top_standoff_insert_height, "screw reaches past the insert pocket");
-    assert(sc_cb >= sc_head_k, str("M2.5x", sc_screw_len, " too long for a ", sc_plate_t, " plate: counterbore ", sc_cb));
-    assert(sc_shank >= 1.5, str("M2.5x", sc_screw_len, " too short: ", sc_shank, " mm left in the plate"));
+if (part == "bottom" || part == "mount" || part == "assembly") {
+    assert(len(sc_case_screws) > 0, str(sbc_model, ": no stock M2.5 countersunk length fits the insert pocket"));
     assert(sc_plate_t - sc_bolt_head_k >= 2, "plate too thin under the T-nut screw heads");
-    for (h = sc_holes) assert(abs(h[0] - sc_ex) - (sc_head_d + sc_head_clear) / 2 >= sc_profile / 2,
-        str(sbc_model, ": M2.5 head at x ", h[0], " lands on the extrusion face"));
+    assert(sc_ear_insert_depth < sc_plate_t, "ear insert pocket breaks through the plate");
     for (b = sc_bolts) assert(b[1] - (sc_bolt_head_d + sc_head_clear) / 2 >= sc_y[0]
                               && b[1] + (sc_bolt_head_d + sc_head_clear) / 2 <= sc_y[1],
         str(sbc_model, ": bolt spacing ", sc_spacing, " puts a T-nut screw head outside the plate"));
-    echo(str("mount: plate ", sc_x[1] - sc_x[0], " x ", sc_y[1] - sc_y[0], " x ", sc_plate_t,
-             ", case screws M2.5x", sc_screw_len, " (counterbore ", sc_cb, ")",
+    echo(str("mount: plate ", sc_mx[1] - sc_mx[0], " x ", sc_y[1] - sc_y[0], " x ", sc_plate_t,
+             ", case screws M2.5x", sc_case_screw, " countersunk (", sc_case_screw - bottom_height, " into the insert)",
+             ", ear screws at x ", sc_ears[0][0], " / ", sc_ears[1][0],
              ", T-nut screws at x ", sc_ex, ", y ", sc_bolts[0][1], " / ", sc_bolts[1][1]));
 }
 
 // ---- parts, model frame --------------------------------------------------------------------
 module sc_lid() {
+    // The vents' ends at the window, roofed over by the member; it spans the lid inside the side walls.
+    translate([sc_x[0] + sidethick, sc_gy[0] - sc_gpio_margin - sc_member_w, case_z - floorthick])
+        cube([sc_x[1] - sc_x[0] - 2 * sidethick, sc_member_w, floorthick]);
     difference() {
         case_top(case_design);
+        // The window runs down through the standoffs' support collars too, so none hangs over the opening.
         difference() {
-            translate([sc_gx[0] - sc_gpio_margin, sc_gy[0] - sc_gpio_margin, case_z - floorthick - 1])
-                cube([sc_gx[1] - sc_gx[0] + 2 * sc_gpio_margin, sc_gy[1] - sc_gy[0] + 2 * sc_gpio_margin, floorthick + 2]);
+            translate([sc_gx[0] - sc_gpio_margin, sc_gy[0] - sc_gpio_margin, case_z - floorthick - top_standoff_support_height - 1])
+                cube([sc_gx[1] - sc_gx[0] + 2 * sc_gpio_margin, sc_gy[1] - sc_gy[0] + 2 * sc_gpio_margin,
+                      floorthick + top_standoff_support_height + 2]);
             for (h = sc_holes)
                 translate([h[0], h[1], 0])
                     // Case Builder's hex pillar: top_standoff_diameter across flats, a flat facing +-x
@@ -116,25 +133,71 @@ module sc_lid() {
                     rotate([0, 0, 30])
                         cylinder(d = (top_standoff_diameter + 2 * sc_standoff_ring) * 2 / sqrt(3), h = case_z + 1, $fn = 6);
         }
+        sc_open_to_rim(bottom_height - 0.01, case_z - floorthick, -1) case_top(case_design);
     }
+}
+
+module sc_box(a, b) translate(a) cube(b - a);
+function sc_v(n, nv, tv, z) = n == 0 ? [nv, tv, z] : [tv, nv, z];   // n: the wall's normal axis
+function sc_span(a, b) = [min(a, b), max(a, b)];
+
+// What to cut so every opening and indent in the side walls runs straight out to the rim at its own
+// width: as printed (rim up), no wall then hangs over a port. dir is +1 where the rim is above z0..z1
+// (bottom), -1 where it is below (lid). Each wall (clear of the rounded corners) is sampled inside its
+// own material, never the air beside it, in two layers: its inner half finds the through openings,
+// which are cut through the whole wall; its outer half also finds Case Builder's indents (half the wall
+// deep), which are cut to their own depth. Each sweep is 0.1 wider than its void along the wall and
+// starts 0.05 inside it, so no new face lies on or near an old one (that left non-manifold edges).
+module sc_open_to_rim(z0, z1, dir) {
+    r = corner_fillet + 0.5;
+    h = z1 - z0;
+    tz = dir > 0 ? [0.05, h] : [-h, -0.05];
+    // [normal axis, outward sign, outer face, thickness, along-wall range]
+    for (w = [[1, -1, sc_y[0], wallthick, sc_x[0] + r, sc_x[1] - r], [1, 1, sc_y[1], wallthick, sc_x[0] + r, sc_x[1] - r],
+              [0, -1, sc_x[0], sidethick, sc_y[0] + r, sc_y[1] - r], [0, 1, sc_x[1], sidethick, sc_y[0] + r, sc_y[1] - r]])
+        let(n = w[0], s = w[1], o = w[2], th = w[3], i = o - s * th, mid = o - s * th / 2)
+            // [sampled layer, what is cut]
+            for (l = [[sc_span(mid, i + s * 0.05), sc_span(o + s * 0.3, i - s * 0.3)],
+                      [sc_span(o - s * 0.05, mid + s * 0.05), sc_span(o + s * 0.3, mid - s * 0.01)]])
+                intersection() {
+                    sc_box(sc_v(n, l[1][0], w[4], z0), sc_v(n, l[1][1], w[5], z1));
+                    minkowski() {
+                        difference() { sc_box(sc_v(n, l[0][0], w[4], z0), sc_v(n, l[0][1], w[5], z1)); children(); }
+                        sc_box(sc_v(n, -th - 1, -0.05, tz[0]), sc_v(n, th + 1, 0.05, tz[1]));
+                    }
+                }
 }
 
 module sc_rounded(x, y, r, h) hull()
     for (px = [x[0] + r, x[1] - r], py = [y[0] + r, y[1] - r]) translate([px, py, 0]) cylinder(r = r, h = h, $fn = 48);
 
+// Case Builder's bottom with the two ears. Each ear reaches 0.2 into the end wall, below every
+// opening Case Builder cuts there (they start above the board's underside).
+module sc_bottom() {
+    difference() {
+        case_bottom(case_design);
+        sc_open_to_rim(floorthick, bottom_height + 0.01, 1) case_bottom(case_design);
+    }
+    for (i = [0, 1]) let(e = sc_ears[i], s = i == 0 ? -1 : 1, w0 = sc_x[i] - s * 0.2)
+        difference() {
+            hull() {
+                translate([min(w0, w0 + s * 0.01), e[1] - sc_ear_w / 2, 0]) cube([0.01, sc_ear_w, sc_ear_t]);
+                translate([e[0], e[1], 0]) cylinder(d = sc_ear_w, h = sc_ear_t, $fn = 48);
+            }
+            translate([e[0], e[1], -1]) cylinder(d = sc_ear_clear_d, h = sc_ear_t + 2, $fn = 32);
+        }
+}
+
 module sc_mount() {
     difference() {
         union() {
-            translate([0, 0, -sc_plate_t]) sc_rounded(sc_x, sc_y, corner_fillet, sc_plate_t);
+            translate([0, 0, -sc_plate_t]) sc_rounded(sc_mx, sc_y, corner_fillet, sc_plate_t);
             if (sc_key)
                 translate([sc_ex - sc_slot_w / 2 + 0.2, sc_y[0], -sc_plate_t - sc_key_h])
                     cube([sc_slot_w - 0.4, sc_y[1] - sc_y[0], sc_key_h]);
         }
-        for (h = sc_holes) {
-            translate([h[0], h[1], -sc_plate_t - sc_key_h - 1])
-                cylinder(d = sc_screw_clear_d, h = sc_plate_t + sc_key_h + 2, $fn = 32);
-            translate([h[0], h[1], -sc_plate_t - 1]) cylinder(d = sc_head_d + sc_head_clear, h = sc_cb + 1, $fn = 32);
-        }
+        for (e = sc_ears)
+            translate([e[0], e[1], -sc_ear_insert_depth]) cylinder(d = sc_ear_insert_d, h = sc_ear_insert_depth + 1, $fn = 32);
         for (b = sc_bolts) {
             translate([b[0], b[1], -sc_plate_t - sc_key_h - 1])
                 cylinder(d = sc_bolt_clear_d, h = sc_plate_t + sc_key_h + 2, $fn = 32);
@@ -169,12 +232,12 @@ module sc_coupon() {
 
 // ---- dispatch ------------------------------------------------------------------------------
 if (part == "lid") translate([0, depth, case_z]) rotate([180, 0, 0]) sc_lid();
-if (part == "bottom") case_bottom(case_design);
+if (part == "bottom") sc_bottom();
 if (part == "mount") translate([0, 0, sc_plate_t]) sc_mount();
 if (part == "coupon") sc_coupon();
 if (part == "assembly") {
     color("dimgrey") sc_mount();
-    color("grey") case_bottom(case_design);
+    color("grey") sc_bottom();
     translate([pcb_loc_x, pcb_loc_y, bottom_height - pcb_z + pcb_loc_z]) sbc(sbc_model);
     color("silver", 0.6) sc_lid();
 }

@@ -11,14 +11,17 @@ Where the limits come from:
     Upstream marks rpi3a+, rpi4b and rpizero2w "yellow, unverified"; the printed fit test is the check on it.
   * Header pitch 2.54: 0.1 in.
   * M2.5 and M5 major diameters: ISO 261 via partspec.refs.iso_metric_thread.
-  * ISO 4762 socket heads, typed from the standard: M2.5 dk 4.5, k 2.5; M5 dk 8.5, k 5.0.
+  * ISO 4762 socket heads, typed from the standard: M3 dk 5.5, k 3.0; M5 dk 8.5, k 5.0. ISO 7046-1 M2.5
+    countersunk head dk 4.7 (actual, max), typed from the standard.
+  * Heat-set insert, M3 x 5.7 (the ear screws): slice-case's insert, length 5.7 from the same vendor table
+    (3djake.com CNC Kitchen M3 standard listing); its pocket, 4.0 x 6.7, is slice-case's printed one.
   * Heat-set insert, M2.5 x 4.0: length 4.0 from Prusa's CNC Kitchen insert set listing
     (prusa3d.com/product/heat-set-inserts-set-xxl-760-pcs); hole 3.7 is an unverified aggregator figure
     (funkfinger.github.io/binkey-data/parts/cnc-kitchen-heat-set-inserts-universal), which is why the coupon
     exists. The pocket check below asserts room for the insert's length at a diameter below every rung.
   * 2020 extrusion face 20 mm: the profile's name.
-  * Screw stack (the counterbore floor): derived below from the screw length, Case Builder's board-top height
-    (echoed by the model as bottom_height) and the thread engagement; stated in the comment where it is used.
+  * Case screw length: the model picks it (echoed as case_screw); the check below holds its reach into the
+    insert, length - bottom_height, between 2.5 and the insert's length.
 World: model frame for bottom; lid and mount in print orientation as sbc_case.scad documents."""
 import json
 import os
@@ -40,17 +43,20 @@ BOARDS = json.load(open(os.path.join(HERE, 'boards.json')))['parameterSets']
 SRC = os.path.join(HERE, 'sbc_case.scad')
 
 M25 = iso_metric_thread.coarse(2.5).nominal
+M3 = iso_metric_thread.coarse(3).nominal
 M5 = iso_metric_thread.coarse(5).nominal
-ISO4762 = {'M2.5': {'dk': 4.5, 'k': 2.5}, 'M5': {'dk': 8.5, 'k': 5.0}}   # typed from ISO 4762
+ISO4762 = {'M3': {'dk': 5.5, 'k': 3.0}, 'M5': {'dk': 8.5, 'k': 5.0}}   # typed from ISO 4762
+ISO7046_M25_DK = 4.7                                                   # typed from ISO 7046-1
 INSERT_LEN = Referenced(4.0, {'standard': 'Prusa CNC Kitchen heat-set insert set listing',
                               'subject': 'M2.5 x 4.0 heat-set insert', 'field': 'length'})
+INSERT_M3_LEN = Referenced(5.7, {'standard': '3djake.com CNC Kitchen M3 standard listing',
+                                 'subject': 'M3 x 5.7 heat-set insert', 'field': 'length'})
 PITCH = 2.54
 PROFILE = 20                        # 2020 face
 
 # The mount's own design inputs, as sbc_case.scad declares them (change-detectors, not references).
 PLATE_T = 8
-SCREW_LEN = 16
-ENGAGEMENT = 3.5
+EAR_T = 4
 
 
 def _value(v):
@@ -105,6 +111,15 @@ def _lid(board):
     gx, gy = d['gpio_x'], d['gpio_y']
     p.keep_out(region.box(min=(gx[0], fy(gy[1]), -0.1), max=(gx[1], fy(gy[0]), d['floorthick'] + 0.1)),
                shell=0.4, id='gpio-window')
+    # Over the window, nothing hangs from the roof up to the standoff collars' height (Case Builder's
+    # top_standoff_support_height, 4): no overhang left over the opening, outside each standoff's ring.
+    ft, m = d['floorthick'], 1.0
+    p.keep_out(region.box(min=(7.5, fy(gy[1] + m), ft - 0.5), max=(57.5, fy(gy[0] - m), ft + 3.9)),
+               shell=0.3, id='window-no-overhang')
+    # A roof strip between the window and the vents, so each vent bar is held at both ends: no slot runs into
+    # the window.
+    p.keep_in(region.box(min=(gx[0], fy(gy[0] - m) + 0.2, 0.2), max=(gx[1], fy(gy[0] - m) + 2.8, ft - 0.2)),
+              shell=0.3, id='vent-member')
     # Each top standoff keeps its wall on the window side: the window must not cut it.
     for i, (hx, hy) in enumerate(d['holes']):
         side = 1 if hx < (gx[0] + gx[1]) / 2 else -1
@@ -129,10 +144,28 @@ def _lid(board):
 def _bottom(board):
     d = board_data(board)
     p = _solid(Part(f'bottom-{board}', _src(board, 'bottom')))
-    # The case screw's path: an M2.5 passes the floor and the bottom standoff at every board hole.
+    # The case screw's path: an M2.5 passes the floor and the bottom standoff at every board hole, and its
+    # countersunk head goes into the floor's underside.
     for hx, hy in d['holes']:
         p.keep_out(region.cylinder(d=M25, h=d['bottom_height'] + 0.2, at=(hx, hy, -0.1), axis='z'),
                    shell=0.4, id=f'screw-path@{hx},{hy}')
+        p.keep_out(region.cylinder(d=ISO7046_M25_DK, h=0.3, at=(hx, hy, -0.1), axis='z'),
+                   shell=0.4, id=f'countersink@{hx},{hy}')
+    # The header-side wall has no port on any board: it stays whole, floor to rim (the rim cut keeps to openings).
+    y1, w = d['case_y'][1], d['wallthick']
+    p.keep_in(region.box(min=(d['case_x'][0] + 4, y1 - w + 0.1, d['floorthick'] + 0.3),
+                         max=(d['case_x'][1] - 4, y1 - 0.1, d['bottom_height'] - 0.1)),
+              shell=0.3, id='header-wall')
+    # Its reach into the lid insert, which starts at the board top: enough thread, and inside the insert.
+    reach = d['case_screw'] - d['bottom_height']
+    assert 2.5 <= reach <= INSERT_LEN, f'{board}: M2.5x{d["case_screw"]} reaches {reach} into the insert'
+    # The ears: an M3 passes each, there is ear around it, and the screw head clears the case's end wall.
+    hd, hk = ISO4762['M3']['dk'], ISO4762['M3']['k']
+    for i, (ex, ey) in enumerate(d['ears']):
+        p.keep_out(region.cylinder(d=M3, h=EAR_T + 0.2, at=(ex, ey, -0.1), axis='z'), shell=0.4, id=f'ear-hole-{i}')
+        p.keep_in(region.box(min=(ex - 0.3, ey + 2.2, 0.2), max=(ex + 0.3, ey + 3.0, EAR_T - 0.2)),
+                  shell=0.3, id=f'ear-{i}')
+        p.keep_out(region.cylinder(d=hd, h=hk, at=(ex, ey, EAR_T + 0.1), axis='z'), shell=0.4, id=f'ear-head-{i}')
     return p
 
 
@@ -140,21 +173,14 @@ def _bottom(board):
 def _mount(board):
     d = board_data(board)
     p = _solid(Part(f'mount-{board}', _src(board, 'mount')))
-    p.genus(6)                                   # four case screws, two T-nut screws: through-holes only
-    # Screw stack. The insert starts at the top standoff face, at the board top as modelled (bottom_height above
-    # the case floor); an M2.5 x SCREW_LEN reaching ENGAGEMENT into it leaves SCREW_LEN - bottom_height -
-    # ENGAGEMENT of shank in the plate, so the head seats that far below the plate top.
-    seat = PLATE_T - (SCREW_LEN - d['bottom_height'] - ENGAGEMENT)
-    hd, hk = ISO4762['M2.5']['dk'], ISO4762['M2.5']['k']
-    assert seat >= hk, f'{board}: M2.5x{SCREW_LEN} head ({hk}) does not fit a {seat} counterbore'
-    for hx, hy in d['holes']:
-        p.keep_out(region.cylinder(d=M25, h=PLATE_T + 0.2, at=(hx, hy, -0.1), axis='z'), shell=0.4,
-                   id=f'screw@{hx},{hy}')
-        p.keep_out(region.cylinder(d=hd, h=seat + 0.1, at=(hx, hy, -0.1), axis='z'), shell=0.4,
-                   id=f'head-pocket@{hx},{hy}')
-        # Material the head bears on, just above the seat, between the clearance hole and the head's rim.
-        p.keep_in(region.box(min=(hx - 0.3, hy + 1.6, seat + 0.1), max=(hx + 0.3, hy + 2.1, seat + 0.6)),
-                  shell=0.3, id=f'head-seat@{hx},{hy}')
+    p.genus(2)                                   # the two T-nut screws; the ear insert pockets are blind
+    # The ear screws: an M3 x 5.7 insert fits each pocket, under its ear, and the pocket stays blind.
+    for i, (ex, ey) in enumerate(d['ears']):
+        p.keep_out(region.cylinder(d=M3 + 0.9, h=INSERT_M3_LEN, at=(ex, ey, PLATE_T - INSERT_M3_LEN + 0.1), axis='z'),
+                   shell=0.3, id=f'ear-insert-{i}')
+        # The pocket's floor, bed to pocket bottom (PLATE_T - 6.7, slice-case's pocket depth).
+        p.keep_in(region.box(min=(ex - 0.3, ey - 0.3, 0.1), max=(ex + 0.3, ey + 0.3, PLATE_T - 6.7 - 0.1)), shell=0.2,
+                  id=f'ear-insert-floor-{i}')
     # The T-nut screws: shank through, socket head recessed below the plate top (which meets the case floor).
     bd, bk = ISO4762['M5']['dk'], ISO4762['M5']['k']
     for i, (bx, by) in enumerate(d['bolts']):

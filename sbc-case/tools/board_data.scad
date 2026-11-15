@@ -8,4 +8,5 @@ part = "none";
 echo(str("BOARD_DATA", "{\"holes\":", sc_holes, ",\"gpio_x\":", sc_gx, ",\"gpio_y\":", sc_gy,
     ",\"depth\":", depth, ",\"case_z\":", case_z, ",\"floorthick\":", floorthick, ",\"wallthick\":", wallthick,
     ",\"bottom_height\":", bottom_height, ",\"case_x\":", sc_x, ",\"case_y\":", sc_y,
-    ",\"ex\":", sc_ex, ",\"bolts\":", sc_bolts, "}"));
+    ",\"ex\":", sc_ex, ",\"bolts\":", sc_bolts, ",\"ears\":", sc_ears, ",\"mount_x\":", sc_mx,
+    ",\"case_screw\":", sc_case_screw, "}"));
