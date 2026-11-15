@@ -12,7 +12,8 @@
             "top_standoff_insert": "true",
             "top_standoff_insert_dia": "3.7",
             "top_standoff_insert_height": "4.5",
-            "bottom_standoff_size": "m2.5+"
+            "bottom_standoff_size": "m2.5+",
+            "bottom_standoff_type": "countersunk"
         },
         "rpi3a+": {
             "sbc_model": "rpi3a+",
@@ -25,7 +26,8 @@
             "top_standoff_insert": "true",
             "top_standoff_insert_dia": "3.7",
             "top_standoff_insert_height": "4.5",
-            "bottom_standoff_size": "m2.5+"
+            "bottom_standoff_size": "m2.5+",
+            "bottom_standoff_type": "countersunk"
         },
         "rpizero2w": {
             "sbc_model": "rpizero2w",
@@ -39,6 +41,7 @@
             "top_standoff_insert_dia": "3.7",
             "top_standoff_insert_height": "4.5",
             "bottom_standoff_size": "m2.5+",
+            "bottom_standoff_type": "countersunk",
             "top_cover_pattern": "solid"
         }
     }

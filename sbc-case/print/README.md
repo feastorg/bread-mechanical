@@ -18,21 +18,25 @@ answer before printing a case.
 | File | For |
 |---|---|
 | `<board>_lid.stl` | Lid, printed roof down. Vents, and the window over the GPIO header |
-| `<board>_bottom.stl` | Bottom, printed floor down |
+| `<board>_bottom.stl` | Bottom, printed floor down, with an ear at each short end |
 | `<board>_mount_2020.stl` | Extrusion mount, printed underside down |
 
 `<board>` is `rpi4b`, `rpi3a+` or `rpizero2w`. Print the Pi 4B and Pi 3A+ first.
 
-## Hardware, per case with its mount
+## Hardware, per case
 
 - 4 M2.5 x 4.0 heat-set inserts (CNC Kitchen "M2.5 standard" class), one in each lid standoff.
-- 4 M2.5 x 16 socket head screws (ISO 4762), from under the mount, through the bottom and the board, into the
-  inserts.
+- 4 M2.5 countersunk screws (ISO 7046-1 or ISO 14581), up through the floor and the board into the inserts:
+  M2.5 x 12 for the 4B and 3A+, M2.5 x 10 for the Zero 2 W. They close the case with or without the mount.
+
+With the mount, add:
+
+- 2 M3 x 5.7 heat-set inserts (as slice-case's), one in each pocket on the mount's top face.
+- 2 M3 x 8 or x 10 socket head screws (ISO 4762), down through the ears into those inserts. Undo these two
+  and the closed case lifts off.
 - 2 M5 socket head screws (ISO 4762) and 2 M5 drop-in T-nuts for 2020. The head sits in a 5 mm recess, leaving
   3 mm of plate under it, so an M5 x 8 puts about 5 mm into the T-nut. Check that against your T-nuts.
   Screw the mount to the extrusion before the case goes on: these heads are under the case.
-
-Using the case without the mount needs shorter M2.5 screws; that length has not been worked out.
 
 ## Fit test (first print of each board)
 
@@ -45,6 +49,8 @@ unverified for all three boards, and which models the board as 1.0 mm thick. Rec
    component.
 4. Dupont jumpers plug onto every pin of the 40-pin header through the roof window, including the end pins
    on both rows.
-5. With the mount: the four M2.5 x 16 screws reach the inserts and pull the lid down, and their heads sit
-   below the mount's underside.
+5. The four countersunk screws pull the lid down, and their heads sit flush with or below the floor, so the
+   case sits flat on the mount.
 6. The mount sits flat on the extrusion, and both M5 heads sit below its top face.
+7. The two M3 ear screws hold the case down on the mount without rocking, and undoing them lifts the closed
+   case off.
