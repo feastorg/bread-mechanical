@@ -7,8 +7,10 @@ a future stand are separate parts. They meet only through the slot interface,
 
 Status (2026-10): a Slice_RLHT case (`s_tray_nano-b`, `s_lid`, `panel_rlht`) and
 the backplane part were printed and fitted to a real Slice_RLHT and Loaf_x004. The
-bus socket, guide, ear towers and lid spigots fit as designed. The interface is
-still marked provisional until the open items below are measured.
+bus socket, guide, ear towers and lid spigots fit as designed. In 2026-11 a second
+S case packed beside it at 30.4 cleared its neighbour, with a hex key still
+reaching every ear screw. The interface is still marked provisional until the
+open items below are measured.
 
 ## What is here
 
@@ -89,7 +91,8 @@ the folder that holds this repository, or in `$BREADS_REPOS`.
   the pins meet. The guide, not the ear screws, sets the slice position.
 - Front: a sliding panel with V tongues in the tray towers and a spring-finger
   detent, carrying an engraved legend and leaving a wire slot open at the bottom.
-  Re-terminating a packed slice may mean pulling it (2 ear screws).
+  A packed slice can be re-terminated in place: a 3 mm flat blade under the
+  `tilt_jig` turned every MKDS screw on a Slice_RLHT (bench, 2026-11).
 - MCU USB: a plug-sized port at each board's own Nano USB, tall enough for a
   soldered or socketed Nano. S trays come in two USB groups, `nano-a` and
   `nano-b` (`print/src/groups.py`). A snap-in plug (`usb_plug`) closes it,
@@ -98,10 +101,8 @@ the folder that holds this repository, or in `$BREADS_REPOS`.
 
 ## Open items
 
-- Two cases packed at 30.4: neighbour clearance, and hex-key reach to the ear
-  screws with neighbours in place.
 - Socket-to-header float with the ears seated (designed 0.13).
-- Re-terminating in place under a packed neighbour (`print/1-coupons/tilt_jig`).
+- `usb_plug` snap fit, not yet printed.
 - The legend source: a `slice.yaml` field or schematic net labels.
 - A stand that fastens to the backplane part's underside, in place of the loose
   feet.
