@@ -30,6 +30,7 @@ part = "lid";   // lid | bottom | mount | coupon | assembly
 sc_pitch = 2.54;            // 0.1 in header pitch
 sc_gpio_margin = 1;         // clearance around the pin field, each side
 sc_standoff_ring = 0.5;     // material the window leaves around each top standoff
+sc_member_w = 3;            // roof strip between the window and the vents, so each vent bar is held at both ends
 
 // ---- mount ---------------------------------------------------------------------------------
 sc_plate_t = 8;
@@ -114,11 +115,16 @@ if (part == "bottom" || part == "mount" || part == "assembly") {
 
 // ---- parts, model frame --------------------------------------------------------------------
 module sc_lid() {
+    // The vents' ends at the window, roofed over by the member; it spans the lid inside the side walls.
+    translate([sc_x[0] + sidethick, sc_gy[0] - sc_gpio_margin - sc_member_w, case_z - floorthick])
+        cube([sc_x[1] - sc_x[0] - 2 * sidethick, sc_member_w, floorthick]);
     difference() {
         case_top(case_design);
+        // The window runs down through the standoffs' support collars too, so none hangs over the opening.
         difference() {
-            translate([sc_gx[0] - sc_gpio_margin, sc_gy[0] - sc_gpio_margin, case_z - floorthick - 1])
-                cube([sc_gx[1] - sc_gx[0] + 2 * sc_gpio_margin, sc_gy[1] - sc_gy[0] + 2 * sc_gpio_margin, floorthick + 2]);
+            translate([sc_gx[0] - sc_gpio_margin, sc_gy[0] - sc_gpio_margin, case_z - floorthick - top_standoff_support_height - 1])
+                cube([sc_gx[1] - sc_gx[0] + 2 * sc_gpio_margin, sc_gy[1] - sc_gy[0] + 2 * sc_gpio_margin,
+                      floorthick + top_standoff_support_height + 2]);
             for (h = sc_holes)
                 translate([h[0], h[1], 0])
                     // Case Builder's hex pillar: top_standoff_diameter across flats, a flat facing +-x
@@ -127,7 +133,39 @@ module sc_lid() {
                     rotate([0, 0, 30])
                         cylinder(d = (top_standoff_diameter + 2 * sc_standoff_ring) * 2 / sqrt(3), h = case_z + 1, $fn = 6);
         }
+        sc_open_to_rim(bottom_height - 0.01, case_z - floorthick, -1) case_top(case_design);
     }
+}
+
+module sc_box(a, b) translate(a) cube(b - a);
+function sc_v(n, nv, tv, z) = n == 0 ? [nv, tv, z] : [tv, nv, z];   // n: the wall's normal axis
+function sc_span(a, b) = [min(a, b), max(a, b)];
+
+// What to cut so every opening and indent in the side walls runs straight out to the rim at its own
+// width: as printed (rim up), no wall then hangs over a port. dir is +1 where the rim is above z0..z1
+// (bottom), -1 where it is below (lid). Each wall (clear of the rounded corners) is sampled inside its
+// own material, never the air beside it, in two layers: its inner half finds the through openings,
+// which are cut through the whole wall; its outer half also finds Case Builder's indents (half the wall
+// deep), which are cut to their own depth. Each sweep is 0.1 wider than its void along the wall and
+// starts 0.05 inside it, so no new face lies on or near an old one (that left non-manifold edges).
+module sc_open_to_rim(z0, z1, dir) {
+    r = corner_fillet + 0.5;
+    h = z1 - z0;
+    tz = dir > 0 ? [0.05, h] : [-h, -0.05];
+    // [normal axis, outward sign, outer face, thickness, along-wall range]
+    for (w = [[1, -1, sc_y[0], wallthick, sc_x[0] + r, sc_x[1] - r], [1, 1, sc_y[1], wallthick, sc_x[0] + r, sc_x[1] - r],
+              [0, -1, sc_x[0], sidethick, sc_y[0] + r, sc_y[1] - r], [0, 1, sc_x[1], sidethick, sc_y[0] + r, sc_y[1] - r]])
+        let(n = w[0], s = w[1], o = w[2], th = w[3], i = o - s * th, mid = o - s * th / 2)
+            // [sampled layer, what is cut]
+            for (l = [[sc_span(mid, i + s * 0.05), sc_span(o + s * 0.3, i - s * 0.3)],
+                      [sc_span(o - s * 0.05, mid + s * 0.05), sc_span(o + s * 0.3, mid - s * 0.01)]])
+                intersection() {
+                    sc_box(sc_v(n, l[1][0], w[4], z0), sc_v(n, l[1][1], w[5], z1));
+                    minkowski() {
+                        difference() { sc_box(sc_v(n, l[0][0], w[4], z0), sc_v(n, l[0][1], w[5], z1)); children(); }
+                        sc_box(sc_v(n, -th - 1, -0.05, tz[0]), sc_v(n, th + 1, 0.05, tz[1]));
+                    }
+                }
 }
 
 module sc_rounded(x, y, r, h) hull()
@@ -136,7 +174,10 @@ module sc_rounded(x, y, r, h) hull()
 // Case Builder's bottom with the two ears. Each ear reaches 0.2 into the end wall, below every
 // opening Case Builder cuts there (they start above the board's underside).
 module sc_bottom() {
-    case_bottom(case_design);
+    difference() {
+        case_bottom(case_design);
+        sc_open_to_rim(floorthick, bottom_height + 0.01, 1) case_bottom(case_design);
+    }
     for (i = [0, 1]) let(e = sc_ears[i], s = i == 0 ? -1 : 1, w0 = sc_x[i] - s * 0.2)
         difference() {
             hull() {

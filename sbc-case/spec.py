@@ -111,6 +111,15 @@ def _lid(board):
     gx, gy = d['gpio_x'], d['gpio_y']
     p.keep_out(region.box(min=(gx[0], fy(gy[1]), -0.1), max=(gx[1], fy(gy[0]), d['floorthick'] + 0.1)),
                shell=0.4, id='gpio-window')
+    # Over the window, nothing hangs from the roof up to the standoff collars' height (Case Builder's
+    # top_standoff_support_height, 4): no overhang left over the opening, outside each standoff's ring.
+    ft, m = d['floorthick'], 1.0
+    p.keep_out(region.box(min=(7.5, fy(gy[1] + m), ft - 0.5), max=(57.5, fy(gy[0] - m), ft + 3.9)),
+               shell=0.3, id='window-no-overhang')
+    # A roof strip between the window and the vents, so each vent bar is held at both ends: no slot runs into
+    # the window.
+    p.keep_in(region.box(min=(gx[0], fy(gy[0] - m) + 0.2, 0.2), max=(gx[1], fy(gy[0] - m) + 2.8, ft - 0.2)),
+              shell=0.3, id='vent-member')
     # Each top standoff keeps its wall on the window side: the window must not cut it.
     for i, (hx, hy) in enumerate(d['holes']):
         side = 1 if hx < (gx[0] + gx[1]) / 2 else -1
@@ -142,6 +151,11 @@ def _bottom(board):
                    shell=0.4, id=f'screw-path@{hx},{hy}')
         p.keep_out(region.cylinder(d=ISO7046_M25_DK, h=0.3, at=(hx, hy, -0.1), axis='z'),
                    shell=0.4, id=f'countersink@{hx},{hy}')
+    # The header-side wall has no port on any board: it stays whole, floor to rim (the rim cut keeps to openings).
+    y1, w = d['case_y'][1], d['wallthick']
+    p.keep_in(region.box(min=(d['case_x'][0] + 4, y1 - w + 0.1, d['floorthick'] + 0.3),
+                         max=(d['case_x'][1] - 4, y1 - 0.1, d['bottom_height'] - 0.1)),
+              shell=0.3, id='header-wall')
     # Its reach into the lid insert, which starts at the board top: enough thread, and inside the insert.
     reach = d['case_screw'] - d['bottom_height']
     assert 2.5 <= reach <= INSERT_LEN, f'{board}: M2.5x{d["case_screw"]} reaches {reach} into the insert'

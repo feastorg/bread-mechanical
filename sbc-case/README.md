@@ -64,9 +64,11 @@ python3 -I tools/mutate.py    # each mutation must fail its check
 What is checked, per board:
 
 - **Lid**: watertight, one solid; the GPIO pin field is open through the roof; the window leaves every top
-  standoff's wall intact; each standoff has room for an M2.5 x 4.0 insert; the header-side wall is whole along
-  its length.
-- **Bottom**: watertight, one solid; an M2.5 screw passes the floor and standoff at every board hole, and its
+  standoff's wall intact; nothing hangs over the window up to the standoff collars' height; a roof strip
+  separates the window from the vents; each standoff has room for an M2.5 x 4.0 insert; the header-side wall is
+  whole along its length.
+- **Bottom**: watertight, one solid; the header-side wall is whole, floor to rim; an M2.5 screw passes the floor
+  and standoff at every board hole, and its
   countersunk head (ISO 7046-1, dk 4.7) goes into the floor; the case screw's reach into the lid insert is
   2.5 mm to the insert's length; an M3 passes each ear, the ear is whole around it, and the M3 head clears the
   case's end wall.
@@ -84,6 +86,21 @@ What is checked, per board:
   `OPENSCADPATH`.
 - **Bottom holes are `m2.5+`.** Case Builder's `m2.5` makes the hole exactly 2.5 mm, the screw's own major
   diameter; the contract's screw-path check failed on it. `m2.5+` is Case Builder's clearance size.
+- **A member between the GPIO window and the vents.** Case Builder's vent slots ran into the window, which
+  left each vent bar held at one end only, a 2 mm comb tooth with its tip free at the window. A 3 mm roof
+  strip (`sc_member_w`) now closes the slots short of the window, so each bar is held at both ends.
+- **The window cuts through the standoff collars.** It used to reach 1 mm into the lid, which left 3 mm of
+  Case Builder's 10 mm standoff collar hanging over the opening as printed (19.3 mm² facing down on the 4B).
+  It now runs the collar's full height (`top_standoff_support_height`).
+- **Wall openings run out to the rim.** Case Builder's port openings and the indents around them stop short of
+  the rim, which left the wall curling over each port as printed: thin lips at the rim of each lid (4.2 mm² on
+  the 4B, 17.0 mm² on the 3A+, including a 0.5 mm thick sliver over the 3A+ HDMI port) and a bridge over the
+  SD-card slot in the 4B and 3A+ bottoms (28.4 mm²). `sc_open_to_rim()` sweeps every void in the side walls
+  straight out to the rim at its own width: through openings through the whole wall, indents at their own
+  depth. It samples each wall inside its material, never the air beside it; sampling the air removed the
+  walls whole, which the bottom's header-wall check now catches. Downward-facing area off the bed is now 0.0 mm² on every lid and
+  bottom (`../slice-case/design/synth/tools/overhang.py <stl> +z`). partspec has no overhang check yet
+  (heibench/partspec#455), so nothing in `spec.py` holds this.
 - **The GPIO window keeps a 0.5 mm ring around each lid standoff**, following the standoff's hex. On the
   header side the hex flat plus the ring ends at x = 7.0, where the pin field starts. A round keep-out of the
   same size covered the outer 0.46 mm of the pin field; the gpio-window check failed on it.
