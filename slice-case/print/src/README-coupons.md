@@ -214,7 +214,8 @@ the slice (2 ear screws) is the accepted fallback either way.
 - [ ] e: slide and click at each nozzle; record bind, rock, click, holds, and
       the finger roots after 20 cycles.
 - [ ] f: legibility at each nozzle.
-- [ ] g: MKDS drive under the jig: pass or fail, and the angle used.
+- [x] g: MKDS drive under the jig: pass, every screw on a Slice_RLHT with a
+      3 mm flat blade (2026-11).
 - [ ] Print all six at 0.4/0.2, and again at 0.6/0.3 if both nozzles will
       be used. Keep them separate and mark the nozzle on each.
 - [ ] a: record each pocket Ø, the winning rung, and torque pass or fail.
