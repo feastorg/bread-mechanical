@@ -19,6 +19,19 @@ SPEC = open(os.path.join(HERE, 'spec.py')).read()
 NAMES = ast.literal_eval(SPEC.split("for n in ", 1)[1].split("]", 1)[0].strip().rstrip(')') + ')')
 TARGETS = [f'spec.py:{n}' for n in NAMES]
 S, B = 'sbc_case.scad', 'boards.json'
+# boards.json mutations on the 4B's leading lines, which start at its own sbc_model line, so no other board matches.
+B4 = ['"sbc_model": "rpi4b"', '"bottom_standoff_size": "custom"', '"bottom_standoff_diameter": "5.5"',
+      '"bottom_standoff_hole_size": "2.83"', '"bottom_standoff_pillar": "round"', '"bottom_standoff_type": "countersunk"',
+      '"bottom_rear_left_adjust": "-0.6"', '"bottom_front_left_adjust": "-0.6"', '"bottom_rear_right_adjust": "-0.6"',
+      '"bottom_front_right_adjust": "-0.6"']
+
+
+def b4(**new):
+    join = ',\n            '.join
+    return join(B4), join(f'"{l.split(chr(34))[1]}": "{new[l.split(chr(34))[1]]}"' if l.split(chr(34))[1] in new else l
+                          for l in B4)
+
+
 MUTS = [
     # lid
     (S, 'gpio window gone', 'cube([sc_gx[1] - sc_gx[0] + 2 * sc_gpio_margin,', 'cube([0.01,', 'gpio-window'),
@@ -30,18 +43,17 @@ MUTS = [
     (S, 'rim cut samples the air inside the wall', 'for (l = [[sc_span(mid, i + s * 0.05),',
      'for (l = [[sc_span(mid, i - s * 0.05),', 'header-wall'),
     (S, 'no member between the window and the vents', 'sc_member_w = 3;', 'sc_member_w = 0.01;', 'vent-member'),
-    (S, 'standoff sleeve thin again', 'sc_sleeve_d = 5.5;', 'sc_sleeve_d = 4.0;', 'standoff-wall'),
-    (S, 'standoff sleeve above the board', 'top = bottom_height - pcb_z + bottom_rear_left_adjust;',
-     'top = bottom_height - pcb_z + bottom_rear_left_adjust + 0.6;', 'standoff-top'),
-    (B, 'insert pocket shorter than the insert', '"top_standoff_insert_height": "4.5",\n            "bottom_standoff_size": "m2.5+",\n            "bottom_standoff_type": "countersunk"\n        },\n        "rpi3a+"',
-     '"top_standoff_insert_height": "3.5",\n            "bottom_standoff_size": "m2.5+",\n            "bottom_standoff_type": "countersunk"\n        },\n        "rpi3a+"', 'insert-pocket'),
+    (B, 'insert pocket shorter than the insert', '"top_standoff_insert_height": "4.5"\n        },\n        "rpi3a+"',
+     '"top_standoff_insert_height": "3.5"\n        },\n        "rpi3a+"', 'insert-pocket'),
     (B, 'hex roof pattern back on the Zero', '"top_cover_pattern": "solid"', '"top_cover_pattern": "hex_5mm"',
      'header-wall'),
     # bottom
-    (B, 'bottom hole size-for-size', '"bottom_standoff_size": "m2.5+",\n            "bottom_standoff_type": "countersunk"\n        },\n        "rpi3a+"',
-     '"bottom_standoff_size": "m2.5",\n            "bottom_standoff_type": "countersunk"\n        },\n        "rpi3a+"', 'screw-path'),
-    (B, 'no countersink for the case screw head', '"bottom_standoff_type": "countersunk"\n        },\n        "rpi3a+"',
-     '"bottom_standoff_type": "none"\n        },\n        "rpi3a+"', 'countersink'),
+    (B, 'bottom hole size-for-size', *b4(bottom_standoff_hole_size='2.5'), 'screw-path'),
+    (B, 'no countersink for the case screw head', *b4(bottom_standoff_type='none'), 'countersink'),
+    (B, 'standoff wall thin again', *b4(bottom_standoff_diameter='4.0'), 'standoff-wall'),
+    (B, 'standoff back at Case Builder height', *b4(bottom_rear_left_adjust='0', bottom_front_left_adjust='0',
+                                                     bottom_rear_right_adjust='0', bottom_front_right_adjust='0'),
+     'standoff-top'),
     (S, 'ear hole undersize', 'cylinder(d = sc_ear_clear_d, h = sc_ear_t + 2, $fn = 32);',
      'cylinder(d = 2.0, h = sc_ear_t + 2, $fn = 32);', 'ear-hole'),
     (S, 'ear too short for the screw head', 'sc_ear_l = 11;', 'sc_ear_l = 7;', 'ear-head'),

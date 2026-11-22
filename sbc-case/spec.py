@@ -57,11 +57,11 @@ PROFILE = 20                        # 2020 face
 # The mount's own design inputs, as sbc_case.scad declares them (change-detectors, not references).
 PLATE_T = 8
 EAR_T = 4
-# The real board's thickness, which the bottom standoffs stop under: 1.6, measured on a Pi 4B with calipers
-# (Raspberry Pi's mechanical drawings give none; Case Builder models 1.0). The sleeve's wall, a design input: at
-# least 1.2, three perimeters at 0.4.
-BOARD_T = 1.6
-SLEEVE_WALL = 1.2
+# The room the bottom standoffs leave under the lid's standoffs for the board: 1.6, a Pi 4B board measured at 1.4
+# plus 0.2 of allowance chosen at the bench (Raspberry Pi's mechanical drawing gives no thickness; SBC Model
+# Framework models 1.0). The standoff's wall, a design input: at least 1.2, three perimeters at 0.4.
+BOARD_ROOM = 1.6
+STANDOFF_WALL = 1.2
 
 
 def _value(v):
@@ -156,13 +156,13 @@ def _bottom(board):
                    shell=0.4, id=f'screw-path@{hx},{hy}')
         p.keep_out(region.cylinder(d=ISO7046_M25_DK, h=0.3, at=(hx, hy, -0.1), axis='z'),
                    shell=0.4, id=f'countersink@{hx},{hy}')
-        # The standoff stops under the real board, and its wall around the screw hole is printable: material
-        # from the hole (Case Builder's m2.5+, 2.83) out to SLEEVE_WALL, above the base collar (4 tall) to the top.
-        top = d['bottom_height'] - BOARD_T
+        # The standoff leaves BOARD_ROOM under the lid's standoffs, and its wall round the screw hole is printable:
+        # material from the hole (2.83, boards.json) out to STANDOFF_WALL, above the base collar (4 tall) to the top.
+        top = d['bottom_height'] - BOARD_ROOM
         p.keep_out(region.cylinder(d=4.0, h=0.35, at=(hx, hy, top + 0.05), axis='z'), shell=0.3,
                    id=f'standoff-top@{hx},{hy}')
         r0 = 2.83 / 2
-        p.keep_in(region.box(min=(hx + r0 + 0.2, hy - 0.3, 4.3), max=(hx + r0 + SLEEVE_WALL - 0.2, hy + 0.3, top - 0.1)),
+        p.keep_in(region.box(min=(hx + r0 + 0.2, hy - 0.3, 4.3), max=(hx + r0 + STANDOFF_WALL - 0.2, hy + 0.3, top - 0.1)),
                   shell=0.3, id=f'standoff-wall@{hx},{hy}')
     # The header-side wall has no port on any board: it stays whole, floor to rim (the rim cut keeps to openings).
     y1, w = d['case_y'][1], d['wallthick']

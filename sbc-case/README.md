@@ -69,8 +69,8 @@ What is checked, per board:
   standoff's wall intact; nothing hangs over the window up to the standoff collars' height; a roof strip
   separates the window from the vents; each standoff has room for an M2.5 x 4.0 insert; the header-side wall is
   whole along its length.
-- **Bottom**: watertight, one solid; the header-side wall is whole, floor to rim; each standoff stops under a
-  1.6 mm board and has a 1.2 mm wall round its hole; an M2.5 screw passes the floor and standoff at every board
+- **Bottom**: watertight, one solid; the header-side wall is whole, floor to rim; each standoff leaves 1.6 mm
+  for the board and has a 1.2 mm wall round its hole; an M2.5 screw passes the floor and standoff at every board
   hole, and its
   countersunk head (ISO 7046-1, dk 4.7) goes into the floor; the case screw's reach into the lid insert is
   2.5 mm to the insert's length; an M3 passes each ear, the ear is whole around it, and the M3 head clears the
@@ -87,14 +87,17 @@ What is checked, per board:
 - **scadman does not fetch git submodules**, so SBC Model Framework is its own pin, at the commit Case
   Builder's submodule records. Case Builder's `./SBC_Model_Framework/...` includes still resolve, through
   `OPENSCADPATH`.
-- **Bottom standoffs: sleeved, and lowered for a 1.6 mm board.** Case Builder's `m2.5+` pillar is 4 mm across
-  its 2.83 mm hole, a 0.6 mm wall, which printed poorly on the 4B. A 5.5 mm sleeve round each (`sc_sleeve_d`)
-  gives about 1.3 mm, and stays inside the 6 mm pad round each mounting hole on Raspberry Pi's 4B drawing.
-  Case Builder stops the pillars under a board `pcb_z` thick (1.0); the 4B measures 1.6 with calipers, and
-  Raspberry Pi's drawings give no thickness. So the four `bottom_*_adjust` values drop them 0.6, and the board
-  meets the lid's standoffs without being squeezed. The 3A+ and Zero 2 W take the same 1.6, unmeasured.
-- **Bottom holes are `m2.5+`.** Case Builder's `m2.5` makes the hole exactly 2.5 mm, the screw's own major
-  diameter; the contract's screw-path check failed on it. `m2.5+` is Case Builder's clearance size.
+- **Bottom standoffs: Case Builder's `custom` size, lowered for the real board.** All in `boards.json`, no
+  code. Case Builder's `m2.5` and `m2.5+` sizes fix the pillar at 4 mm across, which round the 2.83 mm hole
+  is a 0.6 mm wall; it printed poorly on the 4B. `custom` takes `bottom_standoff_diameter` (5.5, round: about
+  a 1.3 mm wall, inside the 6 mm pad round each mounting hole on Raspberry Pi's 4B drawing) and
+  `bottom_standoff_hole_size` (2.83, `m2.5+`'s clearance hole; Case Builder's `m2.5` is exactly the screw's
+  2.5 major diameter, which the screw-path check fails). Its countersink is then 6.16 wide and 1.32 deep
+  (103°, Case Builder's `2 x hole + 0.5` and `0.465 x hole`), so a 90° M2.5 head bottoms on the hole's edge
+  about 0.4 below the floor. SBC Model Framework models the boards 1.0 thick (`pcb_z`), and Case Builder stops
+  the pillars under that. The Pi 4B's board measures 1.4; the four `bottom_*_adjust` values drop the pillars
+  0.6, leaving 1.6 for it: 0.2 of allowance, chosen at the bench. The 3A+ and Zero 2 W get the same drop,
+  unmeasured.
 - **A member between the GPIO window and the vents.** Case Builder's vent slots ran into the window, which
   left each vent bar held at one end only, a 2 mm comb tooth with its tip free at the window. A 3 mm roof
   strip (`sc_member_w`) now closes the slots short of the window, so each bar is held at both ends.
@@ -139,7 +142,7 @@ What is checked, per board:
 ## Not yet verified
 
 - Board models: Case Builder's openings and standoffs follow SBC Model Framework's data, which upstream marks
-  unverified for all three boards. It models the board as 1.0 mm thick; the bottom standoffs allow for 1.6,
-  measured on the 4B only.
+  unverified for all three boards. It models the board as 1.0 mm thick; the bottom standoffs leave 1.6, a 1.4 mm
+  board measured on the 4B only plus 0.2.
 - M2.5 insert hole: 3.7 mm is a starting value from an unofficial source; the coupon decides it.
 - Print fit on the 3A+ and Zero 2 W, and the 4B's reprinted bottom.
