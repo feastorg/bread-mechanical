@@ -56,6 +56,17 @@ sc_ear_w = 11;
 sc_ear_clear_d = 3.4;       // ISO 273 medium, M3
 sc_ear_insert_d = 4.0;      // slice-case insert_hole_d
 sc_ear_insert_depth = 6.7;  // insert 5.7 + 1.0, as slice-case
+// Bottom standoffs. Case Builder stops them under a board pcb_z thick (1.0 for these models); a real Pi 4B
+// measures 1.6 (calipers, 2026-11; Raspberry Pi's drawings give no thickness), so each drops 0.6. Plain numbers:
+// a reassigned Case Builder variable is evaluated where Case Builder first assigns it, before anything here is
+// defined.
+bottom_rear_left_adjust = -0.6;
+bottom_front_left_adjust = -0.6;
+bottom_rear_right_adjust = -0.6;
+bottom_front_right_adjust = -0.6;
+// A sleeve round each: Case Builder's m2.5+ pillar is 4 across its 2.83 hole, a 0.6 wall.
+sc_sleeve_d = 5.5;          // inside the Pi's 6 mm keep-out pad round each mounting hole
+sc_sleeve_hole_d = 2.85;    // Case Builder's 2.83, cut once over it so no two hole faces coincide
 
 // ---- coupon: M2.5 insert pockets -----------------------------------------------------------
 sc_coupon_rungs = [3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0];
@@ -174,9 +185,19 @@ module sc_rounded(x, y, r, h) hull()
 // Case Builder's bottom with the two ears. Each ear reaches 0.2 into the end wall, below every
 // opening Case Builder cuts there (they start above the board's underside).
 module sc_bottom() {
+    assert(bottom_front_left_adjust == bottom_rear_left_adjust && bottom_rear_right_adjust == bottom_rear_left_adjust
+           && bottom_front_right_adjust == bottom_rear_left_adjust, "the four bottom standoffs drop together");
+    top = bottom_height - pcb_z + bottom_rear_left_adjust;   // Case Builder's standoff height, from z = 0
     difference() {
-        case_bottom(case_design);
-        sc_open_to_rim(floorthick, bottom_height + 0.01, 1) case_bottom(case_design);
+        union() {
+            difference() {
+                case_bottom(case_design);
+                sc_open_to_rim(floorthick, bottom_height + 0.01, 1) case_bottom(case_design);
+            }
+            for (h = sc_holes)
+                translate([h[0], h[1], floorthick - 0.01]) cylinder(d = sc_sleeve_d, h = top - floorthick + 0.01, $fn = 48);
+        }
+        for (h = sc_holes) translate([h[0], h[1], -1]) cylinder(d = sc_sleeve_hole_d, h = top + 2, $fn = 48);
     }
     for (i = [0, 1]) let(e = sc_ears[i], s = i == 0 ? -1 : 1, w0 = sc_x[i] - s * 0.2)
         difference() {

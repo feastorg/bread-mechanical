@@ -15,8 +15,10 @@ in `../scadman.toml` and used unmodified. This folder adds two things:
 - **An extrusion mount.** A plate under the case and its ears. Two M5 screws into T-nuts hold it on the extrusion, which runs
   across the board's short side, under the middle of the hole pattern.
 
-Status (2026-11): designed and checked for the Pi 4B, 3A+ and Zero 2 W; not yet printed. SBC Model
-Framework marks all three boards "yellow, unverified", so the first print is a fit test (`print/README.md`).
+Status (2026-11): designed and checked for the Pi 4B, 3A+ and Zero 2 W. The Pi 4B case was printed and fitted
+to a real board: everything fit except the bottom standoffs, which stood too tall and printed poorly (fixed
+since, below). The 3A+ and Zero 2 W are not printed yet; SBC Model Framework marks all three boards "yellow,
+unverified", so each first print is a fit test (`print/README.md`).
 
 ## What is here
 
@@ -67,8 +69,9 @@ What is checked, per board:
   standoff's wall intact; nothing hangs over the window up to the standoff collars' height; a roof strip
   separates the window from the vents; each standoff has room for an M2.5 x 4.0 insert; the header-side wall is
   whole along its length.
-- **Bottom**: watertight, one solid; the header-side wall is whole, floor to rim; an M2.5 screw passes the floor
-  and standoff at every board hole, and its
+- **Bottom**: watertight, one solid; the header-side wall is whole, floor to rim; each standoff stops under a
+  1.6 mm board and has a 1.2 mm wall round its hole; an M2.5 screw passes the floor and standoff at every board
+  hole, and its
   countersunk head (ISO 7046-1, dk 4.7) goes into the floor; the case screw's reach into the lid insert is
   2.5 mm to the insert's length; an M3 passes each ear, the ear is whole around it, and the M3 head clears the
   case's end wall.
@@ -84,6 +87,12 @@ What is checked, per board:
 - **scadman does not fetch git submodules**, so SBC Model Framework is its own pin, at the commit Case
   Builder's submodule records. Case Builder's `./SBC_Model_Framework/...` includes still resolve, through
   `OPENSCADPATH`.
+- **Bottom standoffs: sleeved, and lowered for a 1.6 mm board.** Case Builder's `m2.5+` pillar is 4 mm across
+  its 2.83 mm hole, a 0.6 mm wall, which printed poorly on the 4B. A 5.5 mm sleeve round each (`sc_sleeve_d`)
+  gives about 1.3 mm, and stays inside the 6 mm pad round each mounting hole on Raspberry Pi's 4B drawing.
+  Case Builder stops the pillars under a board `pcb_z` thick (1.0); the 4B measures 1.6 with calipers, and
+  Raspberry Pi's drawings give no thickness. So the four `bottom_*_adjust` values drop them 0.6, and the board
+  meets the lid's standoffs without being squeezed. The 3A+ and Zero 2 W take the same 1.6, unmeasured.
 - **Bottom holes are `m2.5+`.** Case Builder's `m2.5` makes the hole exactly 2.5 mm, the screw's own major
   diameter; the contract's screw-path check failed on it. `m2.5+` is Case Builder's clearance size.
 - **A member between the GPIO window and the vents.** Case Builder's vent slots ran into the window, which
@@ -130,6 +139,7 @@ What is checked, per board:
 ## Not yet verified
 
 - Board models: Case Builder's openings and standoffs follow SBC Model Framework's data, which upstream marks
-  unverified for all three boards. It models the board as 1.0 mm thick.
+  unverified for all three boards. It models the board as 1.0 mm thick; the bottom standoffs allow for 1.6,
+  measured on the 4B only.
 - M2.5 insert hole: 3.7 mm is a starting value from an unofficial source; the coupon decides it.
-- Print fit and the screw stack on real hardware.
+- Print fit on the 3A+ and Zero 2 W, and the 4B's reprinted bottom.
