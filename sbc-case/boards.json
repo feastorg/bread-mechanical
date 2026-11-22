@@ -3,6 +3,15 @@
     "parameterSets": {
         "rpi4b": {
             "sbc_model": "rpi4b",
+            "bottom_standoff_size": "custom",
+            "bottom_standoff_diameter": "5.5",
+            "bottom_standoff_hole_size": "2.83",
+            "bottom_standoff_pillar": "round",
+            "bottom_standoff_type": "countersunk",
+            "bottom_rear_left_adjust": "-0.6",
+            "bottom_front_left_adjust": "-0.6",
+            "bottom_rear_right_adjust": "-0.6",
+            "bottom_front_right_adjust": "-0.6",
             "case_design": "shell",
             "gpio_opening": "none",
             "cooling": "vent",
@@ -11,12 +20,19 @@
             "top_standoff_diameter": "6",
             "top_standoff_insert": "true",
             "top_standoff_insert_dia": "3.7",
-            "top_standoff_insert_height": "4.5",
-            "bottom_standoff_size": "m2.5+",
-            "bottom_standoff_type": "countersunk"
+            "top_standoff_insert_height": "4.5"
         },
         "rpi3a+": {
             "sbc_model": "rpi3a+",
+            "bottom_standoff_size": "custom",
+            "bottom_standoff_diameter": "5.5",
+            "bottom_standoff_hole_size": "2.83",
+            "bottom_standoff_pillar": "round",
+            "bottom_standoff_type": "countersunk",
+            "bottom_rear_left_adjust": "-0.6",
+            "bottom_front_left_adjust": "-0.6",
+            "bottom_rear_right_adjust": "-0.6",
+            "bottom_front_right_adjust": "-0.6",
             "case_design": "shell",
             "gpio_opening": "none",
             "cooling": "vent",
@@ -25,12 +41,19 @@
             "top_standoff_diameter": "6",
             "top_standoff_insert": "true",
             "top_standoff_insert_dia": "3.7",
-            "top_standoff_insert_height": "4.5",
-            "bottom_standoff_size": "m2.5+",
-            "bottom_standoff_type": "countersunk"
+            "top_standoff_insert_height": "4.5"
         },
         "rpizero2w": {
             "sbc_model": "rpizero2w",
+            "bottom_standoff_size": "custom",
+            "bottom_standoff_diameter": "5.5",
+            "bottom_standoff_hole_size": "2.83",
+            "bottom_standoff_pillar": "round",
+            "bottom_standoff_type": "countersunk",
+            "bottom_rear_left_adjust": "-0.6",
+            "bottom_front_left_adjust": "-0.6",
+            "bottom_rear_right_adjust": "-0.6",
+            "bottom_front_right_adjust": "-0.6",
             "case_design": "shell",
             "gpio_opening": "none",
             "cooling": "none",
@@ -40,8 +63,6 @@
             "top_standoff_insert": "true",
             "top_standoff_insert_dia": "3.7",
             "top_standoff_insert_height": "4.5",
-            "bottom_standoff_size": "m2.5+",
-            "bottom_standoff_type": "countersunk",
             "top_cover_pattern": "solid"
         }
     }
