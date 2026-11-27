@@ -82,10 +82,10 @@ def _clash(name, board_t=None):
 
 
 def clash_rlht() -> Part: return _clash('Slice_RLHT')
-def clash_nano() -> Part: return _clash('Slice_TEMP_NANO_S2L-r2')
-def clash_nano_t14() -> Part: return _clash('Slice_TEMP_NANO_S2L-r2', 1.4)
-def clash_nano_t18() -> Part: return _clash('Slice_TEMP_NANO_S2L-r2', 1.8)
-def clash_nucl_l() -> Part: return _clash('Slice_TEMP_NUCL_L4L-r1')
+def clash_nano() -> Part: return _clash('Slice_TEMP_NANO_S2L')
+def clash_nano_t14() -> Part: return _clash('Slice_TEMP_NANO_S2L', 1.4)
+def clash_nano_t18() -> Part: return _clash('Slice_TEMP_NANO_S2L', 1.8)
+def clash_nucl_l() -> Part: return _clash('Slice_TEMP_NUCL_L4L')
 
 
 def viz_rlht() -> Part:

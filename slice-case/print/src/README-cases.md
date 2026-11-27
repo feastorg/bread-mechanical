@@ -9,13 +9,13 @@ panel is `panel.scad`, included by it), with parameters from
 
 | File | Built from | Bed face | Size x/y/z (mm) |
 |---|---|---|---|
-| `s_tray_nano-a.stl` | Slice_TEMP_NANO_S2L-r2 (USB port at E 36.7) | roof | 72.7 x 121.8 x 29.6 |
+| `s_tray_nano-a.stl` | Slice_TEMP_NANO_S2L (USB port at E 36.7) | roof | 72.7 x 121.8 x 29.6 |
 | `s_tray_nano-b.stl` | Slice_RLHT (USB port at E 29.1) | roof | 72.7 x 121.8 x 29.6 |
-| `s_lid.stl` | Slice_TEMP_NANO_S2L-r2 | outer face | 74.7 x 104.6 x 6.83 |
+| `s_lid.stl` | Slice_TEMP_NANO_S2L | outer face | 74.7 x 104.6 x 6.83 |
 | `panel_rlht.stl` | Slice_RLHT, legend from `design/synth/legends/Slice_RLHT.yaml` (MOCK), engraved 0.6 | roof strip | 14.7 x 102.3 x 29.6 |
 | `panel_aqph.stl` | Slice_AQPH, legend from `legends/Slice_AQPH.yaml` (MOCK), BNC notch from the board | roof strip | 14.7 x 102.3 x 29.6 |
 | `panel_blank.stl` | no legend, no notches | roof strip | 14.7 x 102.3 x 29.6 |
-| `usb_plug.stl` | Slice_TEMP_NANO_S2L-r2 port (the same plug fits both USB groups) | cover face | 16.4 x 21.4 x 3.8 |
+| `usb_plug.stl` | Slice_TEMP_NANO_S2L port (the same plug fits both USB groups) | cover face | 16.4 x 21.4 x 3.8 |
 `python3 -I groups.py` lists which slices each tray and the lid serve; a tray
 group is the set of slices that resolve to identical tray parameters.
 
@@ -80,7 +80,7 @@ unchanged.
 From this directory:
 
 ```
-python3 -I ../../design/synth/tools/resolve.py Slice_TEMP_NANO_S2L-r2 Slice_RLHT Slice_AQPH
+python3 -I ../../design/synth/tools/resolve.py Slice_TEMP_NANO_S2L Slice_RLHT Slice_AQPH
 partspec check print_spec.py:<target> --out <dir>
 partspec measure print_spec.py:<target> --out ../2-cases/<name>.stl
 ```
