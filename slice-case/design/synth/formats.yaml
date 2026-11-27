@@ -58,10 +58,6 @@ exceptions:
     case: none
     reason: L board (100 x 145) declared 70mm x 100mm; bus 0.43 off along A and 0.2 in E, so every hole is 0.46..0.75 off
     retire_by: a design decision (own format row or redraw); slot-interface-v1 named exception
-  Slice_TEMP_PICO_L4L:
-    case: none
-    reason: bus 0.43 off along A and 0.2 in E; holes 0.46..0.75 off the L pattern
-    retire_by: as Slice_STPC
   Slice_STEP:
     case: none
     reason: bus socket 3.4 mm further inboard (board edge at E 5.7) and no d5.0 holes found
