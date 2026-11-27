@@ -316,7 +316,7 @@ def probe_plug_pulled(name):
     return pr
 
 
-SLICES = {'nano': 'Slice_TEMP_NANO_S2L-r2', 'nucl': 'Slice_TEMP_NUCL_L4L-r1', 'dcmt': 'Slice_DCMT', 'rlht': 'Slice_RLHT',
+SLICES = {'nano': 'Slice_TEMP_NANO_S2L', 'nucl': 'Slice_TEMP_NUCL_L4L', 'dcmt': 'Slice_DCMT', 'rlht': 'Slice_RLHT',
           'aqph': 'Slice_AQPH'}
 CASE_FNS = (tray, lid, assembly, probe_board, probe_board_only, probe_parts, probe_below_seat)
 PANEL_FNS = (panel, panel_swept, probe_panel_closed, probe_panel_lid, probe_panel_slide, probe_panel_shift,

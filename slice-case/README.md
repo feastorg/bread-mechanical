@@ -56,10 +56,10 @@ file in `resolved/`. From `design/backplane/`, the backplane checks are the
 targets in `spec.py`, and `bash mutate.sh <scratch dir>` is its mutation sweep.
 
 Known failures: Slice_DCMT (a 1.85 board, below the envelope) and
-Slice_TEMP_NUCL_L4L-r1 (board probe). In the sweep, Slice_IAQM's LED and the far
-corner and panel size of Slice_AOEM, Slice_THMX and Slice_TEMP_NUCL_L4L-r1. Each is
+Slice_TEMP_NUCL_L4L (board probe). In the sweep, Slice_IAQM's LED and the far
+corner and panel size of Slice_AOEM, Slice_THMX and Slice_TEMP_NUCL_L4L. Each is
 a board that differs from its format. Slice_AOEM, Slice_THMX and
-Slice_TEMP_NUCL_L4L-r1 each have an open issue on their repo.
+Slice_TEMP_NUCL_L4L each have an open issue on their repo.
 
 To regenerate `resolved/` after a slice changes, clone the Slice_* repos side by
 side and run `python3 -I tools/resolve.py <Slice_name>...`. It looks for them in

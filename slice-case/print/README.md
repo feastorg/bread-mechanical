@@ -25,7 +25,7 @@ earlier case; the boss, pocket and spigot they test are the same now.
 | File | For |
 |---|---|
 | `s_tray_nano-b.stl` | S tray, USB port at E 29.1 (Nano USB at board x 20.0): Slice_RLHT, Slice_THRM_31856 |
-| `s_tray_nano-a.stl` | S tray, USB port at E 36.7 (Nano USB at board x 27.6): the other 28 S Nano slices (Slice_AQ*, Slice_DCMT, Slice_TEMP_NANO_S2L-r1/r2 and the rest; `src/groups.py` lists them) |
+| `s_tray_nano-a.stl` | S tray, USB port at E 36.7 (Nano USB at board x 27.6): the other 27 S Nano slices (Slice_AQ*, Slice_DCMT, Slice_TEMP_NANO_S2L and the rest; `src/groups.py` lists them) |
 | `s_lid.stl` | S lid, every S slice except Slice_DCMT (its lid has Nano-tail windows) |
 | `panel_rlht.stl` | Front panel for Slice_RLHT, legend engraved 0.6 |
 | `panel_aqph.stl` | Front panel for Slice_AQPH (open-bottom notch for the mated BNC plug) |

@@ -11,7 +11,7 @@ from partspec import Part, openscad, region
 HERE = os.path.dirname(os.path.abspath(__file__))
 SYNTH = os.path.join(HERE, '..', '..', 'design', 'synth')
 BACKEND = os.environ.get('CASE_BACKEND', 'Manifold') or None
-NANO = 'Slice_TEMP_NANO_S2L-r2'
+NANO = 'Slice_TEMP_NANO_S2L'
 IFACE = json.load(open(os.path.join(SYNTH, 'slot-interface-v1.1.json')))
 BLANK = dict(panel_name='', panel_headers=[], panel_labels=[], panel_notches=[])
 

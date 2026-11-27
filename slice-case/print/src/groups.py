@@ -6,7 +6,7 @@ and the board probe are not inputs to either, and floor_reliefs only cut the lid
 import glob, json, os
 
 SYNTH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'design', 'synth')
-BUILT = {'s_tray_nano-a': 'Slice_TEMP_NANO_S2L-r2', 's_tray_nano-b': 'Slice_RLHT'}
+BUILT = {'s_tray_nano-a': 'Slice_TEMP_NANO_S2L', 's_tray_nano-b': 'Slice_RLHT'}
 LID_KEYS = ('board_E', 'board_A', 'board_r', 'holes', 'tongue_A', 'tongue_E_min', 'floor_reliefs')
 
 trays, lids = {}, {}
@@ -20,4 +20,4 @@ for key, names in trays.items():
     port = json.loads(key)['usb_ports']
     print(f"tray {stl[0] if stl else '(no STL)':14s} usb_ports {port}: {len(names)} slices: {' '.join(names)}")
 for key, names in lids.items():
-    print(f"lid  {'s_lid' if 'Slice_TEMP_NANO_S2L-r2' in names else '(no STL)':14s} {len(names)} slices: {' '.join(names)}")
+    print(f"lid  {'s_lid' if 'Slice_TEMP_NANO_S2L' in names else '(no STL)':14s} {len(names)} slices: {' '.join(names)}")

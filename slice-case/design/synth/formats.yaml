@@ -40,7 +40,7 @@ stopgap_dimensions:
 # Named exceptions: the board differs from its format and the case follows the board file for the
 # named item only. Each has a reason and the source fix that would retire it.
 exceptions:
-  Slice_TEMP_NUCL_L4L-r1:
+  Slice_TEMP_NUCL_L4L:
     holes: from_board
     reason: two holes up to 0.183 off the 5 mm inset (tools/boardgeom.py); a d4.7 spigot interferes
     retire_by: move the holes to the 5 mm inset in the board file
@@ -58,7 +58,7 @@ exceptions:
     case: none
     reason: L board (100 x 145) declared 70mm x 100mm; bus 0.43 off along A and 0.2 in E, so every hole is 0.46..0.75 off
     retire_by: a design decision (own format row or redraw); slot-interface-v1 named exception
-  Slice_TEMP_PICO_L4L-r1:
+  Slice_TEMP_PICO_L4L:
     case: none
     reason: bus 0.43 off along A and 0.2 in E; holes 0.46..0.75 off the L pattern
     retire_by: as Slice_STPC

@@ -7,7 +7,7 @@ Contract per print part: watertight, one solid, and nothing below the bed plane 
 
 Trays come in USB groups: the tray is general except for the Nano USB port, which sits at each board's own Nano.
 Every S Nano slice resolves to one of two port positions (resolved params usb_ports), so one tray per group:
-  s_tray_nano-a  port at E 36.7 (Nano USB at board x 27.6)   built from Slice_TEMP_NANO_S2L-r2
+  s_tray_nano-a  port at E 36.7 (Nano USB at board x 27.6)   built from Slice_TEMP_NANO_S2L
   s_tray_nano-b  port at E 29.1 (Nano USB at board x 20.0)   built from Slice_RLHT
 `python3 -I groups.py` lists which slices use which (and checks they resolve to identical tray parameters).
 The lid is the same for every S slice. The panel is the one per-slice part; it prints roof strip down."""
@@ -19,7 +19,7 @@ from partspec import Part, openscad, region
 HERE = os.path.dirname(os.path.abspath(__file__))
 SYNTH = os.path.join(HERE, '..', '..', 'design', 'synth')
 BACKEND = os.environ.get('CASE_BACKEND', 'Manifold') or None
-GROUPS = {'nano-a': 'Slice_TEMP_NANO_S2L-r2', 'nano-b': 'Slice_RLHT'}
+GROUPS = {'nano-a': 'Slice_TEMP_NANO_S2L', 'nano-b': 'Slice_RLHT'}
 BLANK = dict(panel_name='', panel_headers=[], panel_labels=[], panel_notches=[])
 
 
