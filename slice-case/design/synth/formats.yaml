@@ -45,14 +45,12 @@ exceptions:
     reason: two holes up to 0.183 off the 5 mm inset (tools/boardgeom.py); a d4.7 spigot interferes
     retire_by: move the holes to the 5 mm inset in the board file
   Slice_AOEM:
-    format: L
     holes: from_board
-    reason: slice.yaml pcb.dimensions says 70mm x 100mm; the board is 100.116 x 144.894 (L) with the drifted L holes
-    retire_by: set pcb.dimensions (or the pattern) to L in slice.yaml; move the holes to the 5 mm inset
+    reason: the board is 100.116 x 144.894 with the L holes drifted off the 5 mm inset
+    retire_by: move the holes to the 5 mm inset in the board file
   Slice_THMX:
-    format: L
     holes: from_board
-    reason: same board outline and holes as Slice_AOEM; slice.yaml says 70mm x 100mm
+    reason: same board outline and holes as Slice_AOEM
     retire_by: as Slice_AOEM
   Slice_STPC:
     case: none
