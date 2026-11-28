@@ -56,8 +56,9 @@ file in `resolved/`. From `design/backplane/`, the backplane checks are the
 targets in `spec.py`, and `bash mutate.sh <scratch dir>` is its mutation sweep.
 
 Known failures: Slice_DCMT (a 1.85 board, below the envelope) and
-Slice_TEMP_NUCL_L4L (board probe). In the sweep, Slice_IAQM's LED and the far
-corner and panel size of Slice_AOEM, Slice_THMX and Slice_TEMP_NUCL_L4L. Each is
+Slice_TEMP_NUCL_L4L (board probe). In the sweep, Slice_IAQM's LED, the far
+corner of Slice_AOEM, and the far corner and panel size of Slice_THMX and
+Slice_TEMP_NUCL_L4L. Each is
 a board that differs from its format. Slice_AOEM, Slice_THMX and
 Slice_TEMP_NUCL_L4L each have an open issue on their repo.
 

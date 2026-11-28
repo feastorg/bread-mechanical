@@ -174,7 +174,10 @@ module cavity3d() difference() {
             translate([h[0] - 20, s > 0 ? h[1] - 0.3 : h[1] - 20]) square([20.3, 20.3]);
     translate([0, 0, board_top_N + tower_gap]) linear_extrude(roof_in - board_top_N + 1) difference() {
         translate([open_E0, -500]) square([fas_E1 + 10 - open_E0, 1000]);
-        translate([open_E0 - 1, open_A[0]]) square([fas_E1 + 12 - open_E0, open_A[1] - open_A[0]]);
+        // eps wider than the opening: the tower faces must not be coplanar with cavity2d's opening edge, which runs on
+        // past the board outline into the fascia; coplanar, the mesh closes them into non-manifold edges for some
+        // hole positions (Slice_AOEM, far hole at A -45.126)
+        translate([open_E0 - 1, open_A[0] - eps]) square([fas_E1 + 12 - open_E0, open_A[1] - open_A[0] + 2 * eps]);
     }
 }
 // ---- panel tongue and detent, shared by the tray grooves and the panel (s = -1 / +1: the -A / +A tower) ----
